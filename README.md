@@ -17,7 +17,7 @@ KUET, Khulna, Bangladesh · *Harmonization of MODIS and VIIRS Hot Spots*
 
 </div>
 
-> **Branch availability:** The scientific pipeline and premium design-system upgrade are implemented on `main`. This README showcases the latest working `feat/soft-earth-globe-home` interface. Its gallery remains a branch preview until Soft Earth is integrated; application upgrades are being reviewed separately. [README PR](https://github.com/Rockstatata/Agun-Panjika/pull/1) ? [Current merge status](https://github.com/Rockstatata/Agun-Panjika/pulls?q=is%3Apr).
+> **Branch availability:** The scientific pipeline and premium design-system upgrade are implemented on `main`. This README showcases the latest working `feat/soft-earth-globe-home` interface. Its gallery remains a branch preview until Soft Earth is integrated; application upgrades are being reviewed separately. [README history](https://github.com/Rockstatata/Agun-Panjika/pull/1) · [Current merge status](https://github.com/Rockstatata/Agun-Panjika/pulls?q=is%3Apr).
 
 ## Project overview
 
