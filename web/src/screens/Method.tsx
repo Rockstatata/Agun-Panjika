@@ -62,7 +62,7 @@ export function Method({ manifest }: { manifest: Manifest }) {
             {en
               ? "Two models learn VIIRS S-NPP weekly counts from MODIS on the 13 years both flew (2012–2024), and we average them: a negative binomial regression with a separate intercept for each region and month, and gradient-boosted trees that also see the Aqua/Terra split, small-fire and night counts, how many districts burned, and the neighbouring weeks:"
               : "যে ১৩ বছর দুটি সেন্সর একসঙ্গে উড়েছে (২০১২–২০২৪), সেখানে দুটি মডেল MODIS থেকে VIIRS S-NPP-এর সাপ্তাহিক গণনা শেখে, আর আমরা দুটির গড় নিই: অঞ্চল ও মাসভিত্তিক ইন্টারসেপ্টসহ নেগেটিভ বাইনোমিয়াল রিগ্রেশন, এবং গ্রেডিয়েন্ট-বুস্টেড ট্রি, যা Aqua/Terra ভাগ, ছোট ও রাতের আগুন, কতগুলো জেলায় আগুন, আর পাশের সপ্তাহগুলোও দেখে:"}
-            <pre className="mt-2 overflow-x-auto rounded-lg bg-[var(--zero)] p-3 text-xs">
+            <pre tabIndex={0} className="mt-2 overflow-x-auto rounded-lg bg-[var(--zero)] p-3 text-xs">
               V̂ = ½ · NegBin[log μ = a(region, month) + β·log(M+1) + γ·log(F+1)] + ½ · GBM(MODIS features)
             </pre>
             {nb && (

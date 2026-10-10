@@ -198,7 +198,7 @@ function ValidationSection({ val }: { val: ValidationDoc }) {
         {t("sensors.validationTitle")}
       </h2>
       <p className="mb-3 text-sm text-muted">{t("sensors.validationIntro")}</p>
-      <div className="overflow-x-auto">
+      <div tabIndex={0} className="overflow-x-auto">
         <table className="data-table">
           <thead>
             <tr>

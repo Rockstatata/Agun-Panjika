@@ -233,7 +233,7 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
         {weekPoints.removed > 0 && <> · {t("map.removed", { n: num(weekPoints.removed) })}</>}
       </div>
       {table && (
-        <div className="card overflow-x-auto p-3">
+        <div tabIndex={0} className="card overflow-x-auto p-3">
           <table className="data-table">
             <thead>
               <tr>

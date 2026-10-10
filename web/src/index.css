@@ -138,7 +138,7 @@ html[lang="bn"] body {
   border: 1px solid var(--grid);
   background: var(--card);
   color: var(--ink);
-  min-height: 40px;
+  min-height: 44px;
 }
 .btn-primary {
   background: var(--accent);
@@ -152,7 +152,7 @@ html[lang="bn"] body {
   background: var(--card);
   color: var(--ink);
   padding: 8px 10px;
-  min-height: 40px;
+  min-height: 44px;
   font-size: 15px;
 }
 
@@ -231,6 +231,8 @@ html[lang="bn"] .eyebrow {
   :root {
     --paper: #fff;
     --card: #fff;
+    --ink: #172335;
+    --muted: #566477;
   }
   .no-print {
     display: none !important;
@@ -254,3 +256,22 @@ html[lang="bn"] .eyebrow {
     margin: 12mm;
   }
 }
+
+/* Make scrollable scientific content local to its panel, never to the page. */
+main, main > *, .card, header > div { min-width:0; }
+main p, footer p { overflow-wrap:anywhere; }
+input[type="range"] { min-height:44px; }
+.chip { min-height:44px; }
+.select { max-width:100%;min-width:0; }
+summary { min-height:44px;display:flex;align-items:center; }
+button, select, summary { touch-action:manipulation; }
+html[lang="bn"] body { line-height:1.7; }
+@media(max-width:639px) { h1 { line-height:1.3; } .tooltip { max-width:calc(100vw - 24px); } }
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important;transition:none!important;scroll-behavior:auto!important; } }
+@media print {
+ :root[data-theme="dark"], :root:not([data-theme="light"]) { --paper:#fff;--card:#fff;--ink:#172335;--muted:#566477;--grid:#dce2e8;--accent:#b94318;--level-below:#3c6276;--level-normal:#566477;--level-above:#b94318;--level-extreme:#7f2a0c;--level-quiet:#5c6b7c; }
+ .card { box-shadow:none; }
+}
+
+:root[data-theme="dark"] .btn-primary { color:var(--paper); }
+@media(prefers-color-scheme:dark) { :root:not([data-theme="light"]) .btn-primary { color:var(--paper); } }

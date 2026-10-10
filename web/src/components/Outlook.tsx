@@ -165,7 +165,7 @@ export function DangerChart({ doc, region }: { doc: FireWeatherDoc; region: stri
           />
         ))}
       </svg>
-      <div className="mt-2 flex gap-1 overflow-x-auto pb-1" aria-label={t("outlook.forecast")}>
+      <div tabIndex={0} className="mt-2 flex gap-1 overflow-x-auto pb-1" aria-label={t("outlook.forecast")}>
         {fc.map((r) => (
           <div key={r.d} className="flex min-w-[42px] flex-col items-center rounded-md border border-grid px-1 py-1 text-[10px]">
             <span className="text-muted">{date(r.date)}</span>

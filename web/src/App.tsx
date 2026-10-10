@@ -3,12 +3,12 @@ import i18n, { useFmt } from "./i18n";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { loadManifest, useAsync } from "./lib/data";
 import { useRoute, type Route } from "./lib/router";
-import { Home } from "./screens/Home";
-import { Borders } from "./screens/Borders";
-import { Method } from "./screens/Method";
-import { OutlookScreen } from "./screens/OutlookScreen";
-import { Panjika } from "./screens/Panjika";
-import { Sensors } from "./screens/Sensors";
+const Home=lazy(()=>import('./screens/Home').then(m=>({default:m.Home})));
+const Borders=lazy(()=>import('./screens/Borders').then(m=>({default:m.Borders})));
+const Method=lazy(()=>import('./screens/Method').then(m=>({default:m.Method})));
+const OutlookScreen=lazy(()=>import('./screens/OutlookScreen').then(m=>({default:m.OutlookScreen})));
+const Panjika=lazy(()=>import('./screens/Panjika').then(m=>({default:m.Panjika})));
+const Sensors=lazy(()=>import('./screens/Sensors').then(m=>({default:m.Sensors})));
 
 const MapScreen = lazy(() => import("./screens/MapScreen"));
 
@@ -24,6 +24,8 @@ const NAV: { route: Route; icon: ReactNode }[] = [
 
 function useTheme() {
   const [theme, setTheme] = useState<string | null>(() => document.documentElement.getAttribute("data-theme"));
+  const [systemDark,setSystemDark]=useState(()=>window.matchMedia('(prefers-color-scheme: dark)').matches);
+  useEffect(()=>{const mq=window.matchMedia('(prefers-color-scheme: dark)');const update=()=>setSystemDark(mq.matches);mq.addEventListener('change',update);return()=>mq.removeEventListener('change',update)},[]);
   useEffect(() => {
     if (theme) document.documentElement.setAttribute("data-theme", theme);
     try {
@@ -32,7 +34,7 @@ function useTheme() {
       /* ignore */
     }
   }, [theme]);
-  const dark = theme ? theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const dark = theme ? theme === "dark" : systemDark;
   return { dark, toggle: () => setTheme(dark ? "light" : "dark") };
 }
 
@@ -103,6 +105,7 @@ export default function App() {
         {!manifest && !error && <p className="text-muted">{t("app.loading")}</p>}
         {manifest && (
           <ErrorBoundary key={route} fallback={(e) => <p role="alert">{t("app.error", { msg: e.message })}</p>}>
+            <Suspense fallback={<p className="text-muted" role="status">{t('app.loading')}</p>}>
             {route === "home" && <Home manifest={manifest} params={params} setParams={setParams} go={go} />}
             {route === "outlook" && <OutlookScreen manifest={manifest} params={params} setParams={setParams} />}
             {route === "borders" && <Borders />}
@@ -114,6 +117,7 @@ export default function App() {
               </Suspense>
             )}
             {route === "method" && <Method manifest={manifest} />}
+            </Suspense>
             <footer className="no-print mt-10 border-t border-grid pt-4 text-xs text-muted">
               <p className="italic">{t("app.tagline")}</p>
               <p className="mt-1">
