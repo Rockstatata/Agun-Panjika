@@ -1,5 +1,5 @@
 import { scaleBand, scaleLinear } from "d3-scale";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { AnnualChart, SERIES_STYLE } from "../components/AnnualChart";
 import { RegionPicker } from "../components/RegionPicker";
 import { Sonify } from "../components/Sonify";
@@ -17,16 +17,19 @@ export function Sensors({ manifest, params, setParams }: { manifest: Manifest; p
   const regionId = params.get("r") ?? "bgd";
   const { data: doc } = useAsync(() => loadRegion(regionId), [regionId]);
   const { data: val } = useAsync(loadValidation, []);
-  const [on, setOn] = useState<SeriesKey[]>(["modis", "viirs"]);
-  const [withKilns, setWithKilns] = useState(false);
+  const on = (params.get("s") ?? "modis,viirs").split(",").filter((k): k is SeriesKey => ALL.includes(k as SeriesKey));
+  const setOn = (fn: (cur: SeriesKey[]) => SeriesKey[]) => setParams({ s: fn(on).join(",") });
+  const withKilns = params.get("kilns") === "1";
+  const setWithKilns = (v: boolean) => setParams({ kilns: v ? "1" : "0" });
   const rows = useMemo(() => {
     const r = doc ? annual(doc).filter((x) => x.complete) : [];
     // "Include kilns": the same record without the static-source filter (no band; bands are for the filtered record).
     return withKilns ? r.map((x) => ({ ...x, harm: x.all ?? x.harm, lo: x.all ?? x.harm, hi: x.all ?? x.harm })) : r;
   }, [doc, withKilns]);
   const years = rows.map((r) => r.y);
-  const [range, setRange] = useState<[number, number] | null>(null);
-  const [from, to] = range ?? [years[0] ?? 2003, years[years.length - 1] ?? 2024];
+  const from = Number(params.get("from")) || years[0] || 2003;
+  const to = Number(params.get("to")) || years[years.length - 1] || 2024;
+  const setRange = ([from, to]: [number, number]) => setParams({ from, to });
   const k = manifest.naive_factor;
   const labels: Record<SeriesKey, string> = {
     modis: t("sensors.rawModis"),

@@ -9,6 +9,7 @@ import { Method } from "./screens/Method";
 import { OutlookScreen } from "./screens/OutlookScreen";
 import { Panjika } from "./screens/Panjika";
 import { Sensors } from "./screens/Sensors";
+import { DemoTour } from "./components/DemoTour";
 
 const MapScreen = lazy(() => import("./screens/MapScreen"));
 
@@ -99,6 +100,7 @@ export default function App() {
       </header>
 
       <main id="main" className="mx-auto max-w-5xl px-4 py-5">
+        {manifest&&<DemoTour go={go} route={route}/>}
         {error && <p role="alert">{t("app.error", { msg: error.message })}</p>}
         {!manifest && !error && <p className="text-muted">{t("app.loading")}</p>}
         {manifest && (
