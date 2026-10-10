@@ -1,0 +1,21 @@
+lat,lon,n,months,years,peak_share,google_maps,is_kiln_or_industry,notes
+23.69316,90.53419,31,10,7,0.16129,"https://www.google.com/maps/@23.69316,90.53419,600m/data=!3m1!1e3",Y,industrial complex
+22.36141,92.22262,5,4,3,0.4,"https://www.google.com/maps/@22.36141,92.22262,600m/data=!3m1!1e3",N,hill forest
+24.03133,90.99152,5,4,4,0.2,"https://www.google.com/maps/@24.03133,90.99152,600m/data=!3m1!1e3",Y,storage tanks / plant
+23.69476,90.50607,48,10,10,0.14583,"https://www.google.com/maps/@23.69476,90.50607,600m/data=!3m1!1e3",Y,"dense urban, night-only heat (likely small industry)"
+25.7609,88.83956,6,4,3,0.16667,"https://www.google.com/maps/@25.76090,88.83956,600m/data=!3m1!1e3",N,farmland; clay pits at edge (possible kiln site)
+24.15748,91.27614,17,4,9,0.29412,"https://www.google.com/maps/@24.15748,91.27614,600m/data=!3m1!1e3",N,farmland
+23.8054,90.91654,7,4,7,0.42857,"https://www.google.com/maps/@23.80540,90.91654,600m/data=!3m1!1e3",N,"farmland, burnt plots"
+24.05004,89.01631,26,7,5,0.03846,"https://www.google.com/maps/@24.05004,89.01631,600m/data=!3m1!1e3",Y,power plant
+23.68309,90.52474,168,12,15,0.29167,"https://www.google.com/maps/@23.68309,90.52474,600m/data=!3m1!1e3",Y,riverside industry
+23.70844,90.38391,7,4,3,0.0,"https://www.google.com/maps/@23.70844,90.38391,600m/data=!3m1!1e3",N,river next to dense urban
+23.98847,90.64181,5,4,3,0.2,"https://www.google.com/maps/@23.98847,90.64181,600m/data=!3m1!1e3",Y,industrial (tanks)
+24.2188,91.29041,6,4,5,0.16667,"https://www.google.com/maps/@24.21880,91.29041,600m/data=!3m1!1e3",N,farmland
+23.58866,89.90788,5,4,4,0.2,"https://www.google.com/maps/@23.58866,89.90788,600m/data=!3m1!1e3",N,farmland / wetland
+24.04508,91.01699,19,6,6,0.10526,"https://www.google.com/maps/@24.04508,91.01699,600m/data=!3m1!1e3",Y,power plant / factory
+23.69317,90.51048,243,12,13,0.16461,"https://www.google.com/maps/@23.69317,90.51048,600m/data=!3m1!1e3",Y,"dense urban, night-only heat (likely small industry)"
+24.91222,91.8292,8,7,6,0.25,"https://www.google.com/maps/@24.91222,91.82919,600m/data=!3m1!1e3",U,"sheds and stacked material, unclear"
+24.76194,90.41947,5,4,3,0.0,"https://www.google.com/maps/@24.76194,90.41947,600m/data=!3m1!1e3",Y,industrial / substation
+22.47946,90.70825,28,5,9,0.0,"https://www.google.com/maps/@22.47946,90.70825,600m/data=!3m1!1e3",Y,"power plant, gas tanks"
+24.03852,91.00693,75,9,9,0.16,"https://www.google.com/maps/@24.03852,91.00693,600m/data=!3m1!1e3",Y,factory with tanks
+23.68592,90.53039,46,11,10,0.19565,"https://www.google.com/maps/@23.68592,90.53039,600m/data=!3m1!1e3",Y,industrial with tanks

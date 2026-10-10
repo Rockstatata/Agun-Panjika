@@ -1,0 +1,21 @@
+lat,lon,n,months,years,peak_share,google_maps,is_kiln_or_industry,notes
+23.98744,90.64965,26,8,4,0.26923,"https://www.google.com/maps/@23.98744,90.64965,600m/data=!3m1!1e3",Y,power plant at cell edge (Ghorasal)
+22.44478,91.73705,17,5,4,0.0,"https://www.google.com/maps/@22.44478,91.73705,600m/data=!3m1!1e3",Y,steel / factory complex
+22.53733,91.70068,412,12,7,0.15777,"https://www.google.com/maps/@22.53733,91.70068,600m/data=!3m1!1e3",Y,steel mill with smoke
+24.03848,91.00925,80,11,11,0.2,"https://www.google.com/maps/@24.03848,91.00925,600m/data=!3m1!1e3",Y,industrial plant with tanks
+22.47354,91.73612,426,12,12,0.20423,"https://www.google.com/maps/@22.47354,91.73612,600m/data=!3m1!1e3",Y,steel or cement plant
+23.6959,90.50932,34,9,12,0.17647,"https://www.google.com/maps/@23.69590,90.50932,600m/data=!3m1!1e3",U,"dense urban, night-only heat"
+24.63645,91.57524,16,5,3,0.25,"https://www.google.com/maps/@24.63645,91.57523,600m/data=!3m1!1e3",N,farmland and fish ponds
+22.47619,91.7309,32,7,8,0.0625,"https://www.google.com/maps/@22.47619,91.73090,600m/data=!3m1!1e3",U,"bare cut hills, possibly scrap or brick works"
+25.76293,88.8413,14,8,4,0.14286,"https://www.google.com/maps/@25.76293,88.84130,600m/data=!3m1!1e3",Y,factory in cell
+24.63424,91.66126,15,7,5,0.26667,"https://www.google.com/maps/@24.63424,91.66126,600m/data=!3m1!1e3",Y,coal power plant (Barapukuria)
+22.47946,90.70825,28,5,9,0.0,"https://www.google.com/maps/@22.47946,90.70825,600m/data=!3m1!1e3",Y,gas power plant and tanks
+23.71938,90.45225,16,5,6,0.375,"https://www.google.com/maps/@23.71938,90.45225,600m/data=!3m1!1e3",Y,landfill
+23.54978,90.66488,14,5,3,0.14286,"https://www.google.com/maps/@23.54978,90.66488,600m/data=!3m1!1e3",N,forest beside construction site
+25.76583,88.839,11,7,4,0.27273,"https://www.google.com/maps/@25.76583,88.83900,600m/data=!3m1!1e3",Y,factory
+24.63604,91.65888,14,6,5,0.28571,"https://www.google.com/maps/@24.63604,91.65888,600m/data=!3m1!1e3",Y,power plant / substation
+23.98154,90.63614,334,12,9,0.25749,"https://www.google.com/maps/@23.98154,90.63614,600m/data=!3m1!1e3",Y,industrial site
+25.76321,88.83914,83,11,5,0.14458,"https://www.google.com/maps/@25.76321,88.83914,600m/data=!3m1!1e3",Y,factory
+24.63666,91.66419,17,7,6,0.17647,"https://www.google.com/maps/@24.63666,91.66419,600m/data=!3m1!1e3",Y,gas field facility
+23.70094,90.53322,68,10,14,0.16176,"https://www.google.com/maps/@23.70094,90.53322,600m/data=!3m1!1e3",Y,industrial with visible smoke
+24.25235,91.37666,84,10,9,0.29762,"https://www.google.com/maps/@24.25235,91.37666,600m/data=!3m1!1e3",Y,power plant
