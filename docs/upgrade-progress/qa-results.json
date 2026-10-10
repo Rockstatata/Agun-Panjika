@@ -1,0 +1,122 @@
+{
+  "productionSuite": [
+    {
+      "name": "smoke",
+      "exitCode": 0
+    },
+    {
+      "name": "navigation",
+      "exitCode": 0
+    },
+    {
+      "name": "globe",
+      "exitCode": 0
+    },
+    {
+      "name": "charts",
+      "exitCode": 0
+    },
+    {
+      "name": "map",
+      "exitCode": 0
+    },
+    {
+      "name": "reliability",
+      "exitCode": 0
+    },
+    {
+      "name": "demo",
+      "exitCode": 0
+    },
+    {
+      "name": "exports",
+      "exitCode": 0
+    },
+    {
+      "name": "scientific",
+      "exitCode": 0
+    },
+    {
+      "name": "offline",
+      "exitCode": 0
+    }
+  ],
+  "responsiveViews": 42,
+  "widths": [
+    360,
+    390,
+    768,
+    1280,
+    1440
+  ],
+  "languages": [
+    "bn",
+    "en"
+  ],
+  "themes": [
+    "dark",
+    "light"
+  ],
+  "documentOverflows": 0,
+  "pageExceptions": 0,
+  "consoleErrors": 0,
+  "axeFindings": 0,
+  "python": {
+    "passed": 50,
+    "skipped": 9,
+    "failed": 0
+  },
+  "protectedPathsByteIdentical": true,
+  "mainSha": "eef030f663fc8f2918d7c9a07da76ef68bd5a1ce",
+  "featureRemoteHeadsVerified": {
+    "feat/ui-design-system": "568d31a069df4f3bf147624b60735ede9f03f695",
+    "feat/navigation-state": "d9ae2c1261d01b5a358b3096d9c583fea57967de",
+    "feat/3d-geospatial-experience": "67c8d980d6d049101b0363f0867756624c2a768a",
+    "feat/charts-calendar-polish": "3af5d2e40367ec17d996e36cd4d78387741276e9",
+    "feat/map-exploration": "c78103b7aa6ea3443d0dbf97425f331f8da597ec",
+    "feat/loading-reliability": "aa9c85967f2c9a0918ecfee1fd2daceaffe29e81",
+    "feat/accessibility-performance": "01c78ac3d5ea2db7ce18440e771a5ae38edcb195",
+    "feat/demo-storytelling": "b4fa0ba5e178ab48ec0d52531c6a273d2b6bb8ce"
+  },
+  "exports": {
+    "csvByteParity": true,
+    "pngSignature": true,
+    "clipboard": true,
+    "printPdf": true,
+    "realPointDistrictSelection": true,
+    "localUnionTable": true,
+    "audioStartStop": true,
+    "languageThemePersistence": true,
+    "clipboardFailureVisible": true,
+    "shareFailureVisible": true,
+    "pageErrors": [],
+    "consoleErrors": [],
+    "nativeOperatingSystemShare": "Skipped: headless Chromium has no native share sheet"
+  },
+  "offline": {
+    "serviceWorkerControlled": true,
+    "cachedHomeReload": true,
+    "cachedCalendar": true,
+    "archivedObservationParity": true,
+    "offlineNotice": true,
+    "pageErrors": [],
+    "limitations": "Previously visited same-origin resources only; external map tiles and fonts are not cached."
+  },
+  "scientificInteractions": {
+    "outlookWeatherAlertSkillSections": true,
+    "regionSelection": true,
+    "rssCapWeatherForecastByteParity": true,
+    "bordersYearInteraction": true,
+    "continuityAndUncertainty": true,
+    "tileFailureTable": true,
+    "tileRetry": true,
+    "pageErrors": []
+  },
+  "npmAudit": {
+    "moderate": 3,
+    "high": 7,
+    "critical": 1,
+    "total": 11,
+    "affectedVersionParityWithBaseline": true
+  }
+}

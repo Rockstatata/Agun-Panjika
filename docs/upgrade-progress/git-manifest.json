@@ -1,0 +1,120 @@
+{
+  "base": "eef030f663fc8f2918d7c9a07da76ef68bd5a1ce",
+  "features": [
+    {
+      "feature": "ui-design-system",
+      "branch": "feat/ui-design-system",
+      "directory": "agun-ui-design",
+      "port": 5271,
+      "implementationCommits": [
+        "dde89c7ae329025a6d4485217b0b53c35a458b90",
+        "58c856079c352451d0c4b90ca5cf1e900f333d33"
+      ],
+      "documentationCommit": "568d31a069df4f3bf147624b60735ede9f03f695"
+    },
+    {
+      "feature": "navigation-state",
+      "branch": "feat/navigation-state",
+      "directory": "agun-navigation",
+      "port": 5273,
+      "implementationCommits": [
+        "7d231b032889493141421e559588eb5c2d9bae00",
+        "b86f52b16b7c6567c8d1b0d90d04fa9efe1ec121"
+      ],
+      "documentationCommit": "d9ae2c1261d01b5a358b3096d9c583fea57967de"
+    },
+    {
+      "feature": "3d-geospatial-experience",
+      "branch": "feat/3d-geospatial-experience",
+      "directory": "agun-globe",
+      "port": 5274,
+      "implementationCommits": [
+        "0e331961bd7b871a96359d1c14dd8dd9e1903ac7"
+      ],
+      "documentationCommit": "67c8d980d6d049101b0363f0867756624c2a768a"
+    },
+    {
+      "feature": "charts-calendar-polish",
+      "branch": "feat/charts-calendar-polish",
+      "directory": "agun-charts",
+      "port": 5275,
+      "implementationCommits": [
+        "39aa0389a3e7c08b1a3edffe6d7c92cec8462327",
+        "6faeaa0be25bed28f9ac39eca16238792fb1838b"
+      ],
+      "documentationCommit": "3af5d2e40367ec17d996e36cd4d78387741276e9"
+    },
+    {
+      "feature": "map-exploration",
+      "branch": "feat/map-exploration",
+      "directory": "agun-map",
+      "port": 5276,
+      "implementationCommits": [
+        "8c577919745df3e0e3565e2e72fe2036875ea69c"
+      ],
+      "documentationCommit": "c78103b7aa6ea3443d0dbf97425f331f8da597ec"
+    },
+    {
+      "feature": "loading-reliability",
+      "branch": "feat/loading-reliability",
+      "directory": "agun-reliability",
+      "port": 5277,
+      "implementationCommits": [
+        "4098c571e68574378d0bd6afac7a421408133374",
+        "854d476243123dcdd6778b73cd7e6c41f19aa789"
+      ],
+      "documentationCommit": "aa9c85967f2c9a0918ecfee1fd2daceaffe29e81"
+    },
+    {
+      "feature": "accessibility-performance",
+      "branch": "feat/accessibility-performance",
+      "directory": "agun-accessibility",
+      "port": 5278,
+      "implementationCommits": [
+        "10cdacd5fcb5f47f6c02da55dee7075346aecb73"
+      ],
+      "documentationCommit": "01c78ac3d5ea2db7ce18440e771a5ae38edcb195"
+    },
+    {
+      "feature": "demo-storytelling",
+      "branch": "feat/demo-storytelling",
+      "directory": "agun-demo",
+      "port": 5279,
+      "implementationCommits": [
+        "fd3023a9d17fdaa73383ec45a0a53b629c62bfcf"
+      ],
+      "documentationCommit": "b4fa0ba5e178ab48ec0d52531c6a273d2b6bb8ce"
+    }
+  ],
+  "previewCherryPickHistory": [
+    "69c7732498a669de5c3eccf565d9d1a8eeb710a9 docs(upgrade): record repository audit and visual baseline",
+    "5a542cd23cb8d4b495090be185f4905f438a2718 feat(ui-design-system): introduce premium scientific design tokens and visual hierarchy",
+    "2c41fa0a33caf5bcec3ccd9f729cc03cfcf371e5 docs(upgrade): track ui-design-system integration",
+    "f82ebea79e9db9e76c3f9fc89c24646ae00fb934 feat(navigation-state): preserve shareable filters and simplify desktop and mobile navigation",
+    "c9f92f3d2b14abcb96fa2ab861b388ab36409255 docs(upgrade): record navigation and baseline test evidence",
+    "443f545a641ca662aeb60a43b256b2e302d1de79 feat(3d-geospatial-experience): add a lazy geographic sphere with real FIRMS points and 2D fallback",
+    "221d35c2bf7736fcdad1c2ff20e1dd6de1d8fc2a docs(upgrade): record verified globe integration",
+    "c13c6c96b10b1acc8ae4d0a960edf5dc2e77e536 feat(charts-calendar-polish): add precise calendar selection and accessible scientific chart exploration",
+    "d952676e835f175c2ae7c912369c9ed0bbec437f fix(preview): reconcile chart story actions with persistent sensor state",
+    "16a0761b3edc67bc36bd42427bb9acc3ece59d86 feat(map-exploration): add regional hotspot clusters, scientific layers and graceful map recovery",
+    "d2645c5792a1bf5a95e8d914ca4abd656abb9fa7 docs(upgrade): record successful map integration",
+    "d555af039b61ad85dbd9b851791142436f20497c feat(loading-reliability): prevent stale scientific views and add explicit request and export recovery",
+    "d12fa6bccc08aefbd03dbdb9900852f0ed97ffed docs(upgrade): record tested reliability integration",
+    "535c0051d4359f7cec10f42322b8d90a8eae4dc1 feat(accessibility-performance): split route bundles and improve keyboard, touch, contrast and print accessibility",
+    "bd17c2faa34f0893596f32460fb76baaedbf76fd docs(upgrade): record accessibility and bundle review",
+    "bb2d881edfb1e30087c34be533dd91461dd9f082 feat(demo-storytelling): add a bilingual seven-step guided demo that restores user filters",
+    "e8ee5f7d72c5fd1c1dab7c46211fdfdd66afbcce fix(navigation): preserve UTF-8 identity and await lazy section destinations",
+    "1bb137847ba8dcc84a6ef9eb18d3004628546e61 fix(charts): label mixed sources and support keyboard table scrolling",
+    "8abbbffa57b97bd724b445466896b6fdf1c884ff fix(reliability): make export fonts readable and citation keys unique",
+    "085aeef64c89f107252427613983a33961b8c06b fix(ui): strengthen dark sensor comparison contrast",
+    "07836ee0151af295de5ac7a38b33f4cfbbbfa475 docs(upgrade): finalize ui-design-system evidence and review instructions",
+    "4c100b1010314415fa0f6d0b231baeb35806692c docs(upgrade): finalize navigation-state evidence and review instructions",
+    "630bcb386f86480de8aba2490728edf3007becd8 docs(upgrade): finalize 3d-geospatial-experience evidence and review instructions",
+    "c7f908910b710011306437e736a638974cc000c4 docs(upgrade): finalize charts-calendar-polish evidence and review instructions",
+    "b5a32d221d45e6aed8d348d0fa7a9ff66338a38f docs(upgrade): finalize map-exploration evidence and review instructions",
+    "98abb8df68855533b099568bb2c724c98a4d449d docs(upgrade): finalize loading-reliability evidence and review instructions",
+    "f179bd228881b35ac93cb890e91fbd554282fe44 docs(upgrade): finalize accessibility-performance evidence and review instructions",
+    "94726c719b6885d883502c1969353cc46c08f239 docs(upgrade): finalize demo-storytelling evidence and review instructions"
+  ],
+  "integration": "Cherry-picks only. Scientific exports and deployment workflows unchanged."
+}

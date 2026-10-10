@@ -1,5 +1,7 @@
 # feat/ui-design-system
 
+> Historical independent-feature evidence from the original preview audit. The implementation SHAs and main/merge status below describe that snapshot. For current branch heads, preservation checks and manual dependencies, see [the serial review](../SERIAL_MERGE_REVIEW.md).
+
 ## Current Status
 - Status: implemented, independently tested, pushed and integrated into preview/agun-v2.
 - Base: origin/main `eef030f663fc8f2918d7c9a07da76ef68bd5a1ce`; independent worktree `agun-ui-design`.
@@ -35,8 +37,8 @@ All original screens remain available. Scientific calculations and exported data
 ## Git History
 - Branch: `feat/ui-design-system`.
 - Implementation source commits (chronological):
-  - `dde89c7ae329025a6d4485217b0b53c35a458b90` ? feat(ui-design-system): introduce premium scientific design tokens and visual hierarchy
-  - `58c856079c352451d0c4b90ca5cf1e900f333d33` ? fix(ui): strengthen dark sensor comparison contrast
+  - `dde89c7ae329025a6d4485217b0b53c35a458b90` - feat(ui-design-system): introduce premium scientific design tokens and visual hierarchy
+  - `58c856079c352451d0c4b90ca5cf1e900f333d33` - fix(ui): strengthen dark sensor comparison contrast
 
 - Implementation commits pushed successfully; final documentation push recorded in preview Git manifest.
 - Integrated by cherry-pick only into preview/agun-v2; conflicts resolved there. main remains unchanged.

@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';import assert from 'node:assert/strict';
+const browser=await chromium.launch();const page=await browser.newPage();const base=process.argv[2]??'http://127.0.0.1:5275';
+await page.goto(`${base}/?lang=en#/panjika?r=bgd&y=2024&w=14`);const grid=page.getByRole('grid');await grid.waitFor();
+await grid.locator('[role=gridcell]').filter({hasText:''}).first().click();await page.waitForURL(/y=2001/);assert.match(page.url(),/w=1/);await page.locator('.calendar-selection').waitFor();
+await grid.focus();await page.keyboard.press('ArrowRight');await page.keyboard.press('Enter');await page.waitForURL(/w=2/);
+await page.getByRole('button',{name:'Table view',exact:true}).click();await page.locator('main table').waitFor();
+await page.goto(`${base}/#/sensors?r=bgd`);await page.locator('.sensor-story').waitFor();await page.locator('.sensor-story').getByRole('button',{name:'Harmonised',exact:true}).click();
+await page.locator('summary').getByText('Annual data table').click();assert.ok(await page.locator('main table').first().locator('tbody tr').count()>20);
+await page.locator('main svg[tabindex="0"]').focus();await page.keyboard.press('ArrowRight');await page.locator('.tooltip').waitFor();
+console.log('PASS: calendar mouse/keyboard year+week selection, table alternative, harmonization story, annual table and keyboard tooltip');await browser.close();

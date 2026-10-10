@@ -1,0 +1,458 @@
+{
+  "date_asia_dhaka": "2026-10-11",
+  "simulation": {
+    "main": "735e1a420bd7ddb50dcc40f11fbcc370b98cb315",
+    "steps": [
+      {
+        "pr": 3,
+        "branch": "feat/navigation-state",
+        "head": "5473168a3050bdc41893f63656e1f174fd41cf22",
+        "previous": "origin/main",
+        "original_head": "d9ae2c1261d01b5a358b3096d9c583fea57967de",
+        "serial_merge_clean": true,
+        "merge_tree": "e307984ac212a69393f81a1e47f23211335a1629",
+        "incremental_files": [
+          "docs/upgrade-progress/feat-navigation-state.md",
+          "web/src/App.tsx",
+          "web/src/components/Navigation.tsx",
+          "web/src/index.css",
+          "web/src/lib/router.ts",
+          "web/src/screens/MapScreen.tsx",
+          "web/src/screens/Method.tsx",
+          "web/src/screens/Sensors.tsx"
+        ]
+      },
+      {
+        "pr": 4,
+        "branch": "feat/3d-geospatial-experience",
+        "head": "41e1071911beedc0eafc95cf1e9c2fc0d1a20b74",
+        "previous": "feat/navigation-state",
+        "original_head": "67c8d980d6d049101b0363f0867756624c2a768a",
+        "serial_merge_clean": true,
+        "merge_tree": "6e2eefa5f4185fccd49b23195579fdbe30050012",
+        "incremental_files": [
+          "docs/upgrade-progress/feat-3d-geospatial-experience.md",
+          "docs/upgrade-progress/globe-architecture.md",
+          "web/package-lock.json",
+          "web/package.json",
+          "web/public/geo/README.md",
+          "web/public/geo/land.json",
+          "web/src/components/EarthCanvas.tsx",
+          "web/src/components/Globe.css",
+          "web/src/components/GlobePanel.tsx",
+          "web/src/lib/spatial.ts",
+          "web/src/screens/Home.tsx"
+        ]
+      },
+      {
+        "pr": 5,
+        "branch": "feat/charts-calendar-polish",
+        "head": "13c0f412e67f51185e56af0e3846da38c6ff9c61",
+        "previous": "feat/3d-geospatial-experience",
+        "original_head": "3af5d2e40367ec17d996e36cd4d78387741276e9",
+        "serial_merge_clean": true,
+        "merge_tree": "6a44e94a214938c686d26fa66746f41c317c4249",
+        "incremental_files": [
+          "docs/upgrade-progress/feat-charts-calendar-polish.md",
+          "web/src/components/AnnualChart.tsx",
+          "web/src/components/CalendarHeatmap.tsx",
+          "web/src/index.css",
+          "web/src/screens/Panjika.tsx",
+          "web/src/screens/Sensors.tsx"
+        ]
+      },
+      {
+        "pr": 6,
+        "branch": "feat/map-exploration",
+        "head": "7b051ce92f56812fe325196bd9e07213eb531419",
+        "previous": "feat/charts-calendar-polish",
+        "original_head": "c78103b7aa6ea3443d0dbf97425f331f8da597ec",
+        "serial_merge_clean": true,
+        "merge_tree": "a85083aebcefe0bc81f2395ffa175abb5cf9e565",
+        "incremental_files": [
+          "docs/upgrade-progress/feat-map-exploration.md",
+          "web/src/lib/mapSpatial.ts",
+          "web/src/screens/MapScreen.tsx"
+        ]
+      },
+      {
+        "pr": 7,
+        "branch": "feat/loading-reliability",
+        "head": "cbbb934bd4d679fed0be04ca263b6374e471ba32",
+        "previous": "feat/map-exploration",
+        "original_head": "aa9c85967f2c9a0918ecfee1fd2daceaffe29e81",
+        "serial_merge_clean": true,
+        "merge_tree": "abd01c529e83ce50090755ac7c02e29964e61982",
+        "incremental_files": [
+          "docs/upgrade-progress/feat-loading-reliability.md",
+          "web/index.html",
+          "web/src/App.tsx",
+          "web/src/components/RequestStatus.tsx",
+          "web/src/components/ShareButton.tsx",
+          "web/src/index.css",
+          "web/src/lib/data.ts",
+          "web/src/screens/Borders.tsx",
+          "web/src/screens/Home.tsx",
+          "web/src/screens/MapScreen.tsx",
+          "web/src/screens/Method.tsx",
+          "web/src/screens/OutlookScreen.tsx",
+          "web/src/screens/Panjika.tsx",
+          "web/src/screens/Sensors.tsx"
+        ]
+      },
+      {
+        "pr": 8,
+        "branch": "feat/accessibility-performance",
+        "head": "770c24754ded81fc960acfa6fa43610e1aa79925",
+        "previous": "feat/loading-reliability",
+        "original_head": "01c78ac3d5ea2db7ce18440e771a5ae38edcb195",
+        "serial_merge_clean": true,
+        "merge_tree": "24840387ca1f9862ca4997294db3071f295215c9",
+        "incremental_files": [
+          "docs/upgrade-progress/feat-accessibility-performance.md",
+          "web/src/App.tsx",
+          "web/src/components/CalendarHeatmap.tsx",
+          "web/src/components/Outlook.tsx",
+          "web/src/components/Tooltip.tsx",
+          "web/src/index.css",
+          "web/src/lib/useWidth.ts",
+          "web/src/screens/MapScreen.tsx",
+          "web/src/screens/Method.tsx",
+          "web/src/screens/OutlookScreen.tsx",
+          "web/src/screens/Sensors.tsx"
+        ]
+      },
+      {
+        "pr": 9,
+        "branch": "feat/demo-storytelling",
+        "head": "c2cc8a7c10d77dbbec6209526e880e1df7c9cf8d",
+        "previous": "feat/accessibility-performance",
+        "original_head": "b4fa0ba5e178ab48ec0d52531c6a273d2b6bb8ce",
+        "serial_merge_clean": true,
+        "merge_tree": "aac326e2b8e367f45fb6e52523a8fa7936557b99",
+        "incremental_files": [
+          "docs/upgrade-progress/feat-demo-storytelling.md",
+          "web/src/App.tsx",
+          "web/src/components/DemoTour.css",
+          "web/src/components/DemoTour.tsx"
+        ]
+      }
+    ],
+    "docs_clean_after_sequence": true,
+    "docs_head": "00592a832c1f8bc99e51d3cbd6951fa0820146a9",
+    "original_histories_preserved": true,
+    "main_files_deleted": [],
+    "protected_scientific_files_changed": [],
+    "no_refs_changed": true
+  },
+  "checks": [
+    {
+      "branch": "feat/navigation-state",
+      "head": "5473168a3050bdc41893f63656e1f174fd41cf22",
+      "checks": [
+        {
+          "check": "install",
+          "exit_code": 0
+        },
+        {
+          "check": "typecheck",
+          "exit_code": 0
+        },
+        {
+          "check": "build",
+          "exit_code": 0
+        },
+        {
+          "check": "pytest",
+          "exit_code": 0
+        }
+      ],
+      "python": "50 passed, 9 skipped"
+    },
+    {
+      "branch": "feat/3d-geospatial-experience",
+      "head": "41e1071911beedc0eafc95cf1e9c2fc0d1a20b74",
+      "checks": [
+        {
+          "check": "install",
+          "exit_code": 0
+        },
+        {
+          "check": "typecheck",
+          "exit_code": 0
+        },
+        {
+          "check": "build",
+          "exit_code": 0
+        },
+        {
+          "check": "pytest",
+          "exit_code": 0
+        }
+      ],
+      "python": "50 passed, 9 skipped"
+    },
+    {
+      "branch": "feat/charts-calendar-polish",
+      "head": "13c0f412e67f51185e56af0e3846da38c6ff9c61",
+      "checks": [
+        {
+          "check": "install",
+          "exit_code": 0
+        },
+        {
+          "check": "typecheck",
+          "exit_code": 0
+        },
+        {
+          "check": "build",
+          "exit_code": 0
+        },
+        {
+          "check": "pytest",
+          "exit_code": 0
+        }
+      ],
+      "python": "50 passed, 9 skipped"
+    },
+    {
+      "branch": "feat/map-exploration",
+      "head": "7b051ce92f56812fe325196bd9e07213eb531419",
+      "checks": [
+        {
+          "check": "install",
+          "exit_code": 0
+        },
+        {
+          "check": "typecheck",
+          "exit_code": 0
+        },
+        {
+          "check": "build",
+          "exit_code": 0
+        },
+        {
+          "check": "pytest",
+          "exit_code": 0
+        }
+      ],
+      "python": "50 passed, 9 skipped"
+    },
+    {
+      "branch": "feat/loading-reliability",
+      "head": "cbbb934bd4d679fed0be04ca263b6374e471ba32",
+      "checks": [
+        {
+          "check": "install",
+          "exit_code": 0
+        },
+        {
+          "check": "typecheck",
+          "exit_code": 0
+        },
+        {
+          "check": "build",
+          "exit_code": 0
+        },
+        {
+          "check": "pytest",
+          "exit_code": 0
+        }
+      ],
+      "python": "50 passed, 9 skipped"
+    },
+    {
+      "branch": "feat/accessibility-performance",
+      "head": "770c24754ded81fc960acfa6fa43610e1aa79925",
+      "checks": [
+        {
+          "check": "install",
+          "exit_code": 0
+        },
+        {
+          "check": "typecheck",
+          "exit_code": 0
+        },
+        {
+          "check": "build",
+          "exit_code": 0
+        },
+        {
+          "check": "pytest",
+          "exit_code": 0
+        }
+      ],
+      "python": "50 passed, 9 skipped"
+    },
+    {
+      "branch": "feat/demo-storytelling",
+      "head": "c2cc8a7c10d77dbbec6209526e880e1df7c9cf8d",
+      "checks": [
+        {
+          "check": "install",
+          "exit_code": 0
+        },
+        {
+          "check": "typecheck",
+          "exit_code": 0
+        },
+        {
+          "check": "build",
+          "exit_code": 0
+        },
+        {
+          "check": "pytest",
+          "exit_code": 0
+        }
+      ],
+      "python": "50 passed, 9 skipped"
+    }
+  ],
+  "browser": {
+    "head": "c2cc8a7c10d77dbbec6209526e880e1df7c9cf8d",
+    "groups": [
+      {
+        "name": "smoke",
+        "exitCode": 0
+      },
+      {
+        "name": "navigation",
+        "exitCode": 0
+      },
+      {
+        "name": "globe",
+        "exitCode": 0
+      },
+      {
+        "name": "charts",
+        "exitCode": 0
+      },
+      {
+        "name": "map",
+        "exitCode": 0
+      },
+      {
+        "name": "reliability",
+        "exitCode": 0
+      },
+      {
+        "name": "demo",
+        "exitCode": 0
+      },
+      {
+        "name": "exports",
+        "exitCode": 0
+      },
+      {
+        "name": "scientific",
+        "exitCode": 0
+      },
+      {
+        "name": "offline",
+        "exitCode": 0
+      }
+    ],
+    "views": 42,
+    "overflow": 0,
+    "page_exceptions": 0,
+    "console_errors": 0,
+    "unexpected_alerts": 0,
+    "axe_findings": 0,
+    "artifact_directory": "E:\\projects\\NASA SpaceApp\\agun-upgrade-qa\\github-readme-audit\\serial-integration\\browser"
+  },
+  "remote_main_ci": {
+    "run": {
+      "id": 38073014721,
+      "head": "735e1a420bd7ddb50dcc40f11fbcc370b98cb315",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Rockstatata/Agun-Panjika/actions/runs/38073014721"
+    },
+    "jobs": [
+      {
+        "name": "build",
+        "status": "completed",
+        "conclusion": "failure",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install pipeline",
+            "conclusion": "success"
+          },
+          {
+            "name": "Restore FIRMS downloads",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run pipeline",
+            "conclusion": "failure"
+          },
+          {
+            "name": "Test",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Build site",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run actions/upload-pages-artifact@v3",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Restore FIRMS downloads",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "name": "deploy",
+        "status": "completed",
+        "conclusion": "skipped",
+        "steps": []
+      }
+    ]
+  },
+  "preserved": [
+    "all original feature heads as ancestors",
+    "pipeline",
+    "existing Python tests",
+    "scientific data",
+    "deployment workflow",
+    "all original main files",
+    "original preview and Soft Earth branches"
+  ],
+  "inherited_npm_advisories": {
+    "moderate": 3,
+    "high": 7,
+    "critical": 1
+  },
+  "no_pr_merges": true
+}
