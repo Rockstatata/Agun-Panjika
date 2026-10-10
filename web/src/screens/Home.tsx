@@ -4,6 +4,7 @@ import { LevelBadge, LevelIcon } from "../components/LevelBadge";
 import { RegionPicker } from "../components/RegionPicker";
 import { SeasonChart } from "../components/SeasonChart";
 import { ShareButton } from "../components/ShareButton";
+import { GlobePanel } from "../components/GlobePanel";
 import { useFmt } from "../i18n";
 import { AlertList, OutlookCard } from "../components/Outlook";
 import { loadForecast, loadRegion, useAsync } from "../lib/data";
@@ -26,6 +27,7 @@ export function Home({ manifest, params, setParams, go }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <h1 className="no-print text-2xl font-bold leading-tight sm:text-3xl">{t("home.question")}</h1>
+      <GlobePanel manifest={manifest} params={params} setParams={setParams} />
       {doc ? (
         <SeasonView manifest={manifest} doc={doc} params={params} setParams={setParams} go={go} />
       ) : (
