@@ -26,3 +26,4 @@ data/*/
 
 # Local editor / agent config
 .claude/
+*.tsbuildinfo
