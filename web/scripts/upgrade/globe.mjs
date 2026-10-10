@@ -5,7 +5,7 @@ await page.goto(`${process.argv[2]??'http://127.0.0.1:5274'}/?theme=dark&lang=en
 const canvas=page.locator('.earth-renderer canvas');await canvas.waitFor();
 const before=await canvas.screenshot();await page.getByRole('button',{name:'Zoom in',exact:true}).click();const after=await canvas.screenshot();assert.notDeepEqual(before,after);
 await canvas.focus();await page.keyboard.press('ArrowRight');const rotated=await canvas.screenshot();assert.notDeepEqual(after,rotated);
-await page.getByRole('button',{name:'2D map',exact:true}).click();await page.getByRole('button',{name:'Globe',exact:true}).waitFor();
+await page.getByRole('button',{name:'Retry 3D',exact:true}).click();await page.getByRole('button',{name:'Retry 3D',exact:true}).waitFor();await canvas.waitFor();
 assert.ok((await page.locator('.globe-provenance').innerText()).includes('2024'));assert.match(await page.locator('.globe-provenance').innerText(),/W14/);
 const box=await canvas.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+70,box.y+box.height/2+10);await page.mouse.up();
-console.log('PASS: Canvas globe works without WebGL, real archived period, zoom, keyboard rotation, drag, 2D toggle');await browser.close();
+console.log('PASS: Canvas globe works without WebGL, real archived period, zoom, keyboard rotation, drag, honest 3D retry');await browser.close();
