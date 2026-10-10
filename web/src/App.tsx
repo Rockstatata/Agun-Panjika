@@ -1,26 +1,17 @@
-import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import i18n, { useFmt } from "./i18n";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { loadManifest, useAsync } from "./lib/data";
-import { useRoute, type Route } from "./lib/router";
+import { useRoute } from "./lib/router";
 import { Home } from "./screens/Home";
 import { Borders } from "./screens/Borders";
 import { Method } from "./screens/Method";
 import { OutlookScreen } from "./screens/OutlookScreen";
 import { Panjika } from "./screens/Panjika";
 import { Sensors } from "./screens/Sensors";
+import { Navigation, MoreNavigation } from "./components/Navigation";
 
 const MapScreen = lazy(() => import("./screens/MapScreen"));
-
-const NAV: { route: Route; icon: ReactNode }[] = [
-  { route: "home", icon: <path d="M10 2c1.5 4.5 6.5 6.5 6.5 12a6.5 6.5 0 0 1-13 0c0-3.5 2-5 3-8 .7 2 1.5 3 2.2 3.6C9.3 7 10 5 10 2z" /> },
-  { route: "outlook", icon: <path d="M10 2 2 17h16zM10 8v4M10 14.5v.5" /> },
-  { route: "panjika", icon: <path d="M3 4h14v13H3zM3 8h14M7 2v4M13 2v4M6 11h2M9 11h2M12 11h2M6 14h2M9 14h2" /> },
-  { route: "sensors", icon: <path d="M3 16 7 9l3 4 4-8 3 5M3 18h14" /> },
-  { route: "map", icon: <path d="M3 5l4-2 6 2 4-2v12l-4 2-6-2-4 2zM7 3v12M13 5v12" /> },
-  { route: "borders", icon: <path d="M3 10a7 7 0 1 0 14 0 7 7 0 1 0-14 0M3 10h14M10 3c2.5 2.5 2.5 11.5 0 14M10 3c-2.5 2.5-2.5 11.5 0 14" /> },
-  { route: "method", icon: <path d="M4 3h9l3 3v11H4zM7 8h6M7 11h6M7 14h4" /> },
-];
 
 function useTheme() {
   const [theme, setTheme] = useState<string | null>(() => document.documentElement.getAttribute("data-theme"));
@@ -43,7 +34,13 @@ export default function App() {
   const theme = useTheme();
   const switchLang = () => i18n.changeLanguage(lang === "bn" ? "en" : "bn");
   // Keep the region / year when moving between screens.
-  const carry = { r: params.get("r") ?? undefined };
+  const carry = Object.fromEntries(params.entries());
+  useEffect(() => {
+    const url = new URL(location.href);
+    url.searchParams.set("lang", lang);
+    url.searchParams.set("theme", theme.dark ? "dark" : "light");
+    history.replaceState(null, "", url);
+  }, [lang, theme.dark]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -51,7 +48,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen pb-20 lg:pb-8">
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-[var(--card)] focus:p-2">
+      <a href="#main" onClick={(e) => { e.preventDefault(); document.getElementById("main")?.focus(); }} className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-[var(--card)] focus:p-2">
         {t("app.skip")}
       </a>
       <header className="app-header no-print sticky top-0 z-30 border-b border-grid backdrop-blur">
@@ -62,23 +59,12 @@ export default function App() {
             </svg>
             <span className="leading-tight">
               <span className="block text-lg font-bold">{t("app.title")}</span>
-              <span className="block text-xs text-muted">{lang === "bn" ? "Agun Panjika · Fire Almanac" : "আগুন পঞ্জিকা · Fire Almanac"}</span>
+              <span className="block text-xs text-muted">{lang === "bn" ? "Agun Panjika Â· Fire Almanac" : "à¦†à¦—à§à¦¨ à¦ªà¦žà§à¦œà¦¿à¦•à¦¾ Â· Fire Almanac"}</span>
             </span>
           </button>
-          <nav className="hidden gap-1 lg:flex" aria-label="Main">
-            {NAV.map((n) => (
-              <button
-                key={n.route}
-                type="button"
-                onClick={() => go(n.route, carry)}
-                aria-current={route === n.route ? "page" : undefined}
-                className={`rounded-lg px-2.5 py-2 text-sm font-medium ${route === n.route ? "bg-[var(--ink)] text-[var(--paper)]" : "text-muted hover:text-[var(--ink)]"}`}
-              >
-                {t(`nav.${n.route}`)}
-              </button>
-            ))}
-          </nav>
+          <Navigation route={route} go={go} />
           <div className="flex items-center gap-1">
+            <MoreNavigation route={route} go={go} />
             <button type="button" className="btn px-3" onClick={switchLang} aria-label={t("app.languageLabel")} lang={lang === "bn" ? "en" : "bn"}>
               {t("app.language")}
             </button>
@@ -99,7 +85,7 @@ export default function App() {
       </header>
 
       <div className="mission-status no-print"><span>NASA SPACE APPS 2026 <span aria-hidden="true">/</span> KUETaguns</span><span>{lang === "bn" ? "উৎস: NASA FIRMS" : "SOURCE: NASA FIRMS"} · {manifest?.updated_utc.slice(0, 10) ?? "…"}</span></div>
-      <main id="main" className="app-main mx-auto px-4 py-5">
+      <main id="main" tabIndex={-1} className="app-main mx-auto px-4 py-5">
         {error && <p role="alert">{t("app.error", { msg: error.message })}</p>}
         {!manifest && !error && <p className="text-muted">{t("app.loading")}</p>}
         {manifest && (
@@ -118,32 +104,14 @@ export default function App() {
             <footer className="no-print mt-10 border-t border-grid pt-4 text-xs text-muted">
               <p className="italic">{t("app.tagline")}</p>
               <p className="mt-1">
-                NASA FIRMS MODIS C6.1 · VIIRS 375 m (S-NPP, NOAA-20, NOAA-21) · NASA POWER · ESA Fire_cci · {t("app.dataThrough", { date: Object.values(manifest.data_through.by_sensor).sort().pop() ?? "" })} · KUETaguns, NASA Space Apps 2026
+                NASA FIRMS MODIS C6.1 Â· VIIRS 375 m (S-NPP, NOAA-20, NOAA-21) Â· NASA POWER Â· ESA Fire_cci Â· {t("app.dataThrough", { date: Object.values(manifest.data_through.by_sensor).sort().pop() ?? "" })} Â· KUETaguns, NASA Space Apps 2026
               </p>
             </footer>
           </ErrorBoundary>
         )}
       </main>
 
-      <nav className="no-print fixed inset-x-0 bottom-0 z-30 border-t border-grid bg-[var(--paper)] lg:hidden" aria-label="Main">
-        <div className="grid grid-cols-7">
-          {NAV.map((n) => (
-            <button
-              key={n.route}
-              type="button"
-              onClick={() => go(n.route, carry)}
-              aria-current={route === n.route ? "page" : undefined}
-              className="flex flex-col items-center gap-0.5 px-0.5 py-2 text-[10px] leading-tight"
-              style={{ color: route === n.route ? "var(--accent)" : "var(--muted)" }}
-            >
-              <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" aria-hidden="true">
-                {n.icon}
-              </svg>
-              {t(`nav.${n.route}`)}
-            </button>
-          ))}
-        </div>
-      </nav>
+      <Navigation route={route} go={go} mobile />
     </div>
   );
 }
