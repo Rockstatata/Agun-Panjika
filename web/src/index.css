@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+.primary-desktop { display: none; gap: 4px; }
+.primary-desktop button { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-radius: 10px; color: var(--muted); font-size: 14px; }
+.primary-desktop [aria-current] { color: var(--paper); background: var(--ink); }
+.primary-mobile { position: fixed; bottom: 0; left: 0; right: 0; z-index: 30; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); background: var(--paper); border-top: 1px solid var(--grid); padding-bottom: env(safe-area-inset-bottom); }
+.primary-mobile button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 62px; font-size: 11px; color: var(--muted); }
+.primary-mobile [aria-current] { color: var(--accent); background: var(--zero); }
+.more-menu { position: relative; }
+.more-menu summary { cursor: pointer; list-style: none; padding: 8px 10px; }
+.more-menu summary::-webkit-details-marker { display: none; }
+.more-panel { position: absolute; right: 0; top: calc(100% + 8px); width: 240px; padding: 8px; background: var(--card); border: 1px solid var(--grid); border-radius: 14px; box-shadow: 0 12px 32px #0003; z-index: 40; }
+.more-panel button { width: 100%; display: flex; justify-content: space-between; text-align: left; padding: 12px; border-radius: 8px; }
+.more-panel button:hover { background: var(--zero); }
+@media (min-width: 1024px) { .primary-desktop { display: flex; } .primary-mobile { display: none; } }
+@media (max-width: 420px) { header > div { gap: 6px !important; } header .text-lg { font-size: 15px; } header .text-xs { font-size: 10px; } header .btn { padding-left: 8px; padding-right: 8px; } }
+@media print { .primary-mobile, .primary-desktop, .more-menu { display: none !important; } }
+
 /* Almanac, not a dashboard: warm paper, ink text, ember only for fire. */
 :root {
   --paper: #faf7f2;
