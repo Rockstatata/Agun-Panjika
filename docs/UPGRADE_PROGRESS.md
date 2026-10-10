@@ -9,6 +9,7 @@
 ## Feature Status
 | Feature | Status | Branch | Source commit | Tests | Preview |
 |---|---|---|---|---|---|
+| accessibility-performance | Branch and 35 axe/responsive checks passed | feat/accessibility-performance | 10cdacd5fcb5f47f6c02da55dee7075346aecb73 | build, typecheck, pytest, 28 screenshots; zero axe findings at 360/390/768/1280/1440 | Cherry-picked; retained map recovery and retry boundary |
 | loading-reliability | Branch and injected-failure checks passed | feat/loading-reliability | 4098c571e68574378d0bd6afac7a421408133374 | build, typecheck, pytest, 28 views, stale/race/retry/JSON tests | Cherry-picked; retained shared state and design |
 | map-exploration | Branch render and map interaction checks passed | feat/map-exploration | 8c577919745df3e0e3565e2e72fe2036875ea69c | build, typecheck, pytest, 28 views; rendered clusters asserted; WebGL fallback passed | Cherry-picked; retained persistent kiln binding |
 | charts-calendar-polish | Branch checks and chart/calendar interactions passed | feat/charts-calendar-polish | 39aa0389a3e7c08b1a3edffe6d7c92cec8462327 | build, typecheck, pytest, 28 views, keyboard/table checks | Cherry-picked; additive CSS conflict resolved |
