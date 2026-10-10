@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.request-status { display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px;border:1px solid var(--accent);border-radius:14px;margin:12px 0;background:var(--card); }
+.request-skeleton { display:grid;gap:12px;padding:20px;border:1px solid var(--grid);border-radius:14px;min-height:130px; }
+.request-skeleton > span:not(.sr-only) { display:block;height:14px;border-radius:6px;background:var(--zero); }
+.request-skeleton > span:nth-child(2) { width:65%; }
+.request-skeleton > span:nth-child(3) { width:85%; }
+.offline-status { padding:12px;border:1px solid var(--grid);border-radius:10px;margin-bottom:14px;color:var(--muted);font-size:13px; }
+
 /* Almanac, not a dashboard: warm paper, ink text, ember only for fire. */
 :root {
   --paper: #faf7f2;
