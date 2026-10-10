@@ -9,6 +9,7 @@
 ## Feature Status
 | Feature | Status | Branch | Source commit | Tests | Preview |
 |---|---|---|---|---|---|
+| navigation-state | Branch and interaction checks passed | feat/navigation-state | 7d231b032889493141421e559588eb5c2d9bae00 | build, typecheck, pytest, 28 views, back/reload/filter checks | Cherry-picked; App conflict resolved retaining design + focus |
 | ui-design-system | Implemented, branch tests passed; integration QA pending | feat/ui-design-system | dde89c7ae329025a6d4485217b0b53c35a458b90 | build, typecheck, pytest, 28 browser views | Cherry-picked |
 
 ## Evidence
@@ -19,3 +20,5 @@ Original main remains in `../Agun-Panjika`. Combined preview runs from this chec
 
 ## Remaining Work
 All eight feature acceptance checks, integration QA, scientific-data integrity review, export/offline/fallback tests, performance measurement and final regression matrix.
+
+Baseline Python: 50 passed, 9 skipped (raw pipeline inputs absent). Design integration: typecheck/build, 50 passed/9 skipped, 7 route screenshots passed.
