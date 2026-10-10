@@ -33,8 +33,16 @@ export default function App() {
   const { data: manifest, error } = useAsync(loadManifest, []);
   const theme = useTheme();
   const switchLang = () => i18n.changeLanguage(lang === "bn" ? "en" : "bn");
+  useEffect(()=>{
+    const section=params.get('section');if(!section||!['downloads','validation'].includes(section))return;
+    const main=document.getElementById('main');if(!main)return;
+    const focusSection=()=>{const target=document.getElementById(section);if(!target)return false;target.scrollIntoView({block:'start'});return true};
+    if(focusSection())return;
+    const observer=new MutationObserver(()=>{if(focusSection())observer.disconnect()});observer.observe(main,{childList:true,subtree:true});
+    const timeout=window.setTimeout(()=>observer.disconnect(),5000);return()=>{observer.disconnect();clearTimeout(timeout)};
+  },[route,params]);
   // Keep the region / year when moving between screens.
-  const carry = Object.fromEntries(params.entries());
+  const carry = {r:params.get("r")??undefined};
   useEffect(() => {
     const url = new URL(location.href);
     url.searchParams.set("lang", lang);
@@ -59,7 +67,7 @@ export default function App() {
             </svg>
             <span className="leading-tight">
               <span className="block text-lg font-bold">{t("app.title")}</span>
-              <span className="block text-xs text-muted">{lang === "bn" ? "Agun Panjika Â· Fire Almanac" : "à¦†à¦—à§à¦¨ à¦ªà¦žà§à¦œà¦¿à¦•à¦¾ Â· Fire Almanac"}</span>
+              <span className="block text-xs text-muted">{lang === "bn" ? "Agun Panjika · Fire Almanac" : "আগুন পঞ্জিকা · Fire Almanac"}</span>
             </span>
           </button>
           <Navigation route={route} go={go} />
@@ -103,7 +111,7 @@ export default function App() {
             <footer className="no-print mt-10 border-t border-grid pt-4 text-xs text-muted">
               <p className="italic">{t("app.tagline")}</p>
               <p className="mt-1">
-                NASA FIRMS MODIS C6.1 Â· VIIRS 375 m (S-NPP, NOAA-20, NOAA-21) Â· NASA POWER Â· ESA Fire_cci Â· {t("app.dataThrough", { date: Object.values(manifest.data_through.by_sensor).sort().pop() ?? "" })} Â· KUETaguns, NASA Space Apps 2026
+                NASA FIRMS MODIS C6.1 · VIIRS 375 m (S-NPP, NOAA-20, NOAA-21) · NASA POWER · ESA Fire_cci · {t("app.dataThrough", { date: Object.values(manifest.data_through.by_sensor).sort().pop() ?? "" })} · KUETaguns, NASA Space Apps 2026
               </p>
             </footer>
           </ErrorBoundary>
