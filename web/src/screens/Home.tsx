@@ -5,6 +5,7 @@ import { RegionPicker } from "../components/RegionPicker";
 import { SeasonChart } from "../components/SeasonChart";
 import { ShareButton } from "../components/ShareButton";
 import { SectionHeader } from "../components/SectionHeader";
+import { GlobePanel } from "../components/GlobePanel";
 import { useFmt } from "../i18n";
 import { AlertList, OutlookCard } from "../components/Outlook";
 import { loadForecast, loadRegion, useAsync } from "../lib/data";
@@ -26,6 +27,7 @@ export function Home({ manifest, params, setParams, go }: Props) {
   if (error) return <p role="alert">{t("app.error", { msg: error.message })}</p>;
   return (
     <div className="flex flex-col gap-4">
+      <div className="home-geospatial">
       <section className="mission-hero no-print">
         <SectionHeader eyebrow={lang === "bn" ? "বাংলাদেশের অগ্নি পর্যবেক্ষণ" : "BANGLADESH FIRE OBSERVATORY"} title={t("home.question")}>
           <p>{lang === "bn" ? "দুটি উপগ্রহ। একটি নিরবচ্ছিন্ন রেকর্ড। আগুনের মৌসুম বুঝুন, তথ্য দিয়ে।" : "Two satellite instruments. One continuous record. Understand the fire season through the evidence."}</p>
@@ -36,6 +38,8 @@ export function Home({ manifest, params, setParams, go }: Props) {
           <div><strong>MODIS + VIIRS</strong><span>NASA FIRMS · {manifest.model_version}</span></div>
         </div>
       </section>
+      <GlobePanel manifest={manifest} params={params} setParams={setParams} />
+      </div>
       {doc ? (
         <SeasonView manifest={manifest} doc={doc} params={params} setParams={setParams} go={go} />
       ) : (
