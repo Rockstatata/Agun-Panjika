@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { useFmt } from "../i18n";
 import { byYear, handoverWeek, isoWeekStart, monthStartWeeks, rampColor, rampThresholds, RAMP } from "../lib/series";
 import type { RegionDoc } from "../lib/types";
@@ -11,6 +11,7 @@ interface Props {
   years?: number[]; // rows to draw (default: all, newest at the bottom)
   highlightYear?: number;
   onSelectYear?: (y: number) => void;
+  onSelectWeek?: (y: number, w: number) => void;
   markWeek?: number; // outline this week in the highlighted year
   cell?: number;
   showTotals?: boolean;
@@ -19,10 +20,11 @@ interface Props {
 
 const GAP = 1;
 
-export function CalendarHeatmap({ doc, years, highlightYear, onSelectYear, markWeek, cell, showTotals = true, label }: Props) {
+export function CalendarHeatmap({ doc, years, highlightYear, onSelectYear, onSelectWeek, markWeek, cell, showTotals = true, label }: Props) {
   const { t, num, year: fy } = useFmt();
   const tip = useTooltip();
   const svgRef = useRef<SVGSVGElement>(null);
+  const gridId = useId().replace(/:/g, "");
   const grid = useMemo(() => byYear(doc), [doc]);
   const th = useMemo(() => rampThresholds(doc), [doc]);
   const rows = years ?? [...grid.keys()].sort((a, b) => a - b);
@@ -40,6 +42,7 @@ export function CalendarHeatmap({ doc, years, highlightYear, onSelectYear, markW
   const totals = rows.map((y) => (grid.get(y) ?? []).reduce((s, w) => s + (w?.harm ?? 0), 0));
   const maxTot = Math.max(1, ...totals);
   const [focus, setFocus] = useState<[number, number]>([rows.length - 1, (markWeek ?? 1) - 1]);
+  useEffect(()=>{setFocus([Math.max(0,rows.indexOf(highlightYear??rows[rows.length-1])),Math.max(0,Math.min(52,(markWeek??1)-1))])},[doc,highlightYear,markWeek]);
 
   const showTipFor = (ri: number, wi: number) => {
     const el = svgRef.current?.querySelector<SVGRectElement>(`[data-k="${ri}-${wi}"]`);
@@ -56,7 +59,7 @@ export function CalendarHeatmap({ doc, years, highlightYear, onSelectYear, markW
     else if (e.key === "ArrowDown") ri = Math.min(rows.length - 1, ri + 1);
     else if (e.key === "ArrowUp") ri = Math.max(0, ri - 1);
     else if (e.key === "Enter" || e.key === " ") {
-      onSelectYear?.(rows[ri]);
+      if(onSelectWeek) onSelectWeek(rows[ri], wi + 1); else onSelectYear?.(rows[ri]);
       e.preventDefault();
       return;
     } else if (e.key === "Escape") {
@@ -69,12 +72,15 @@ export function CalendarHeatmap({ doc, years, highlightYear, onSelectYear, markW
   };
 
   return (
-    <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: "touch" }}>
+    <div tabIndex={0} className="overflow-x-auto" style={{ WebkitOverflowScrolling: "touch" }}>
       <svg
         ref={svgRef}
         width={width}
         height={height}
         role="grid"
+        aria-rowcount={rows.length}
+        aria-colcount={53}
+        aria-activedescendant={grid.get(rows[focus[0]])?.[focus[1]] ? `${gridId}-${focus[0]}-${focus[1]}` : undefined}
         aria-label={label ?? t("calendar.title")}
         tabIndex={0}
         onKeyDown={onKey}
@@ -95,7 +101,7 @@ export function CalendarHeatmap({ doc, years, highlightYear, onSelectYear, markW
           const hl = highlightYear === y;
           const ry = top + ri * step;
           return (
-            <g key={y} role="row">
+            <g key={y} role="row" aria-rowindex={ri + 1}>
               <text
                 x={left - 6}
                 y={ry + c - 1}
@@ -114,13 +120,16 @@ export function CalendarHeatmap({ doc, years, highlightYear, onSelectYear, markW
                   <rect
                     key={wi}
                     data-k={`${ri}-${wi}`}
+                    id={`${gridId}-${ri}-${wi}`}
                     role="gridcell"
+                    aria-colindex={wi + 1}
+                    aria-selected={hl && markWeek === wi + 1}
                     aria-label={`${fy(y)} W${wi + 1}: ${num(wk.harm)}`}
                     x={left + wi * step}
                     y={ry}
                     width={c}
                     height={c}
-                    rx={1.5}
+                    rx={2.5}
                     fill={rampColor(wk.harm, th)}
                     opacity={highlightYear && !hl ? 0.55 : 1}
                     stroke={focus[0] === ri && focus[1] === wi ? "var(--ink)" : "none"}
@@ -129,7 +138,7 @@ export function CalendarHeatmap({ doc, years, highlightYear, onSelectYear, markW
                     onMouseMove={(e) => tip.show(e.clientX, e.clientY, <WeekTip wk={wk} y={y} w={wi + 1} />)}
                     onClick={() => {
                       setFocus([ri, wi]);
-                      onSelectYear?.(y);
+                      if(onSelectWeek) onSelectWeek(y, wi + 1); else onSelectYear?.(y);
                     }}
                   />
                 ) : null,
@@ -224,7 +233,7 @@ export function CalendarTable({ doc }: { doc: RegionDoc }) {
   const months = t("calendar.months").split(",");
   const rows = [...byYear(doc).entries()].sort((a, b) => a[0] - b[0]);
   return (
-    <div className="overflow-x-auto">
+    <div tabIndex={0} className="overflow-x-auto">
       <table className="data-table">
         <caption className="sr-only">{t("calendar.title")}</caption>
         <thead>

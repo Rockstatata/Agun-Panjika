@@ -1,3 +1,4 @@
+import { RequestStatus } from "../components/RequestStatus";
 import { scaleLinear } from "d3-scale";
 import { AlertList, DangerChart, OutlookCard } from "../components/Outlook";
 import { RegionPicker } from "../components/RegionPicker";
@@ -9,9 +10,9 @@ import { useWidth } from "../lib/useWidth";
 export function OutlookScreen({ manifest, params, setParams }: { manifest: Manifest; params: URLSearchParams; setParams: (p: Record<string, string | number | undefined>) => void }) {
   const { t, num, lang } = useFmt();
   const regionId = params.get("r") ?? "bgd";
-  const { data: fc, error } = useAsync(loadForecast, []);
-  const { data: fw } = useAsync(loadFireWeather, []);
-  const { data: doc } = useAsync(() => loadRegion(regionId), [regionId]);
+  const { data: fc, error,loading,retry } = useAsync(loadForecast, []);
+  const { data: fw,error:fwError,loading:fwLoading,retry:retryFW } = useAsync(loadFireWeather, []);
+  const { data: doc,error:docError,loading:docLoading,retry:retryDoc } = useAsync(() => loadRegion(regionId), [regionId]);
   const fwRegion = regionId.startsWith("d_") ? "bgd" : regionId;
   const name = (id: string) => {
     if (id === "bgd") return lang === "bn" ? manifest.country.name_bn : manifest.country.name_en;
@@ -27,7 +28,9 @@ export function OutlookScreen({ manifest, params, setParams }: { manifest: Manif
         <h1 className="text-2xl font-bold sm:text-3xl">{t("outlook.title")}</h1>
         <p className="mt-1 max-w-2xl text-muted">{t("outlook.intro")}</p>
       </div>
-      {error && <p role="alert">{t("app.error", { msg: error.message })}</p>}
+      <RequestStatus error={error} loading={loading} retry={retry}/>
+      <RequestStatus error={fwError} loading={fwLoading} retry={retryFW}/>
+      <RequestStatus error={docError} loading={docLoading} retry={retryDoc}/>
 
       {fc && (
         <section aria-labelledby="ol-h" className="flex flex-col gap-3">
@@ -118,7 +121,7 @@ function SkillSection({ s }: { s: ForecastSkill; years: [number, number] }) {
         {t("outlook.skillIntro")}
       </p>
       <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
-        <div className="overflow-x-auto">
+        <div tabIndex={0} className="overflow-x-auto">
           <table className="data-table">
             <thead>
               <tr>

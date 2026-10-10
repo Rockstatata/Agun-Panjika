@@ -1,9 +1,12 @@
+import { RequestStatus } from "../components/RequestStatus";
 import { useMemo, useRef } from "react";
 import { CalendarHeatmap } from "../components/CalendarHeatmap";
 import { LevelBadge, LevelIcon } from "../components/LevelBadge";
 import { RegionPicker } from "../components/RegionPicker";
 import { SeasonChart } from "../components/SeasonChart";
 import { ShareButton } from "../components/ShareButton";
+import { GlobePanel } from "../components/GlobePanel";
+import { SectionHeader } from "../components/SectionHeader";
 import { useFmt } from "../i18n";
 import { AlertList, OutlookCard } from "../components/Outlook";
 import { loadForecast, loadRegion, useAsync } from "../lib/data";
@@ -19,17 +22,27 @@ interface Props {
 }
 
 export function Home({ manifest, params, setParams, go }: Props) {
-  const { t } = useFmt();
+  const { t, lang, num, year: fy } = useFmt();
   const regionId = params.get("r") ?? "bgd";
-  const { data: doc, error } = useAsync(() => loadRegion(regionId), [regionId]);
-  if (error) return <p role="alert">{t("app.error", { msg: error.message })}</p>;
+  const { data: doc, error,loading,retry } = useAsync(() => loadRegion(regionId), [regionId]);
+  if (error) return <RequestStatus error={error} retry={retry}/>;
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="no-print text-2xl font-bold leading-tight sm:text-3xl">{t("home.question")}</h1>
+      <section className="mission-hero no-print">
+        <SectionHeader eyebrow={lang === "bn" ? "বাংলাদেশের অগ্নি পর্যবেক্ষণ" : "BANGLADESH FIRE OBSERVATORY"} title={t("home.question")}>
+          <p>{lang === "bn" ? "দুটি উপগ্রহ। একটি নিরবচ্ছিন্ন রেকর্ড। আগুনের মৌসুম বুঝুন, তথ্য দিয়ে।" : "Two satellite instruments. One continuous record. Understand the fire season through the evidence."}</p>
+        </SectionHeader>
+        <div className="mission-facts">
+          <div><strong>{fy(manifest.years[0])}–{fy(manifest.years[manifest.years.length - 1])}</strong><span>{lang === "bn" ? "সমন্বিত অগ্নি রেকর্ড" : "Harmonized fire record"}</span></div>
+          <div><strong>{num(manifest.districts.length)}</strong><span>{lang === "bn" ? "জেলা পর্যবেক্ষণে" : "Districts in view"}</span></div>
+          <div><strong>MODIS + VIIRS</strong><span>NASA FIRMS · {manifest.model_version}</span></div>
+        </div>
+      </section>
+      <GlobePanel manifest={manifest} params={params} setParams={setParams} />
       {doc ? (
         <SeasonView manifest={manifest} doc={doc} params={params} setParams={setParams} go={go} />
       ) : (
-        <p className="text-muted">{t("app.loading")}</p>
+        <RequestStatus loading={loading}/>
       )}
     </div>
   );
@@ -48,7 +61,7 @@ function SeasonView({ manifest, doc, params, setParams, go }: Props & { doc: Reg
   const weekEnd = new Date(isoWeekStart(year, week).getTime() + 6 * 86400000);
   const [b0, b1] = manifest.baseline_years;
   const hasYear = byYear(doc).has(year);
-  const { data: fc } = useAsync(loadForecast, []);
+  const { data: fc,error:forecastError,loading:forecastLoading,retry:retryForecast } = useAsync(loadForecast, []);
   const isLive = year === doc.season.year;
   const alerts = (fc?.alerts.items ?? []).filter((a) =>
     doc.region.id === "bgd"
@@ -144,6 +157,7 @@ function SeasonView({ manifest, doc, params, setParams, go }: Props & { doc: Reg
         </div>
       )}
 
+      {isLive&&<RequestStatus error={forecastError} loading={forecastLoading} retry={retryForecast}/>}
       {isLive && fc && (
         <div className="grid gap-3 sm:grid-cols-2">
           <OutlookCard o={fc.products.next2.outlook[doc.region.id]} name={areaName} />
