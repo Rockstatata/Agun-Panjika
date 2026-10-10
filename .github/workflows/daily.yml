@@ -1,0 +1,83 @@
+name: Daily refresh and deploy
+
+# Every day at 06:00 UTC: pull new FIRMS detections, NASA POWER weather and the 16-day weather forecast,
+# re-run the pipeline (harmonised record, fire-weather index, outlooks, alerts, RSS/CAP feeds), rebuild the
+# site, deploy to GitHub Pages. Historical years come from cached files and do not change.
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install pipeline
+        run: pip install -e ".[dev]"
+
+      - name: Restore FIRMS downloads
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/raw
+            data/boundaries
+          key: firms-${{ github.run_id }}
+          restore-keys: firms-
+
+      - name: Run pipeline
+        env:
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+        run: |
+          if [ -n "$FIRMS_MAP_KEY" ]; then
+            python -m pipeline.run_all --api-since 2025-01-01 --neighbours
+          else
+            echo "::warning::FIRMS_MAP_KEY not set; building from archive country files only"
+            python -m pipeline.run_all
+          fi
+
+      - name: Test
+        run: pytest -q
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Build site
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
