@@ -1,0 +1,28 @@
+# Raw and intermediate data (rebuilt by the pipeline)
+data/raw/
+data/processed/
+data/boundaries/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Web
+web/node_modules/
+web/dist/
+
+# Secrets
+.env
+
+# Pipeline logs
+data/*.log
+
+# Other-country builds (AP_COUNTRY=...)
+build/
+data/*/
+
+# Local editor / agent config
+.claude/
