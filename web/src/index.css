@@ -1,0 +1,256 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Almanac, not a dashboard: warm paper, ink text, ember only for fire. */
+:root {
+  --paper: #faf7f2;
+  --card: #ffffff;
+  --ink: #1f1b16;
+  --muted: #6b6259;
+  --grid: #e6e0d6;
+  --zero: #f1ece4;
+  --accent: #bf461a; /* PRD ember #C84B1A, darkened 4% for 4.5:1 text contrast */
+  --ramp-1: #fde6cf;
+  --ramp-2: #f9b47a;
+  --ramp-3: #ee7a35;
+  --ramp-4: #c84b1a;
+  --ramp-5: #7f2a0c;
+  --modis: #8a8178;
+  --viirs: #3f3a34;
+  --naive: #b5aca2;
+  --band: rgba(200, 75, 26, 0.16);
+  --level-below: #4f6d7a;
+  --level-normal: #6b6259;
+  --level-above: #bf461a;
+  --level-extreme: #7f2a0c;
+  --level-quiet: #776d64;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #16130f;
+    --card: #1f1b16;
+    --ink: #f2ece3;
+    --muted: #b0a597;
+    --grid: #3a332b;
+    --zero: #221d18;
+    --accent: #f08a3e;
+    --ramp-1: #4a2a14;
+    --ramp-2: #8a3d14;
+    --ramp-3: #cc5a1e;
+    --ramp-4: #f08a3e;
+    --ramp-5: #ffd3a1;
+    --modis: #9c9286;
+    --viirs: #e4dccf;
+    --naive: #6b6259;
+    --band: rgba(240, 138, 62, 0.2);
+    --level-below: #8fb3c2;
+    --level-normal: #b0a597;
+    --level-above: #f08a3e;
+    --level-extreme: #ffb27a;
+    --level-quiet: #9c9286;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #16130f;
+  --card: #1f1b16;
+  --ink: #f2ece3;
+  --muted: #b0a597;
+  --grid: #3a332b;
+  --zero: #221d18;
+  --accent: #f08a3e;
+  --ramp-1: #4a2a14;
+  --ramp-2: #8a3d14;
+  --ramp-3: #cc5a1e;
+  --ramp-4: #f08a3e;
+  --ramp-5: #ffd3a1;
+  --modis: #9c9286;
+  --viirs: #e4dccf;
+  --naive: #6b6259;
+  --band: rgba(240, 138, 62, 0.2);
+  --level-below: #8fb3c2;
+  --level-normal: #b0a597;
+  --level-above: #f08a3e;
+  --level-extreme: #ffb27a;
+  --level-quiet: #9c9286;
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  font-family: Inter, "Noto Sans Bengali", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+html[lang="bn"] body {
+  font-family: "Noto Sans Bengali", Inter, system-ui, sans-serif;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--grid);
+  border-radius: 14px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--grid);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 14px;
+  background: var(--card);
+  color: var(--ink);
+  min-height: 36px;
+}
+.chip[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid var(--grid);
+  background: var(--card);
+  color: var(--ink);
+  min-height: 40px;
+}
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.select {
+  border: 1px solid var(--grid);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  padding: 8px 10px;
+  min-height: 40px;
+  font-size: 15px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+html[lang="bn"] .eyebrow {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 13px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  z-index: 50;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  max-width: 260px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.data-table th,
+.data-table td {
+  text-align: right;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--grid);
+  white-space: nowrap;
+}
+.data-table th:first-child,
+.data-table td:first-child {
+  text-align: left;
+}
+.data-table th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.maplibregl-popup-content {
+  background: var(--card) !important;
+  color: var(--ink);
+  border-radius: 10px !important;
+  font-size: 13px;
+}
+
+/* Printable one-page report (Home: "Print report"). */
+.print-only {
+  display: none;
+}
+@media print {
+  :root {
+    --paper: #fff;
+    --card: #fff;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block;
+  }
+  body {
+    font-size: 12px;
+  }
+  main {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  .card {
+    break-inside: avoid;
+    border-color: #ccc;
+  }
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+}
