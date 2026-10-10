@@ -1,0 +1,17 @@
+.globe-panel { background: #0b1220; color: #d3f6fc; border: 1px solid #293a50; border-radius: 22px; padding: 18px; position: relative; overflow: hidden; box-shadow: inset 0 0 80px #6ed8f008; }
+.globe-topline, .globe-provenance { display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:10px;letter-spacing:.07em;color:#aab8cb; }
+.globe-topline button { border:1px solid #456075;border-radius:8px;padding:8px 10px;color:#d3f6fc;min-height:40px; }
+.globe-provenance { border-top:1px solid #293a50;padding-top:14px;margin-top:10px; }
+.globe-provenance i { display:inline-block;width:6px;height:6px;background:#ff9b54;border-radius:50%;margin-right:6px; }
+.globe-note { color:#aab8cb;font-size:10px;line-height:1.5;margin-top:8px; }
+.globe-message { min-height:360px;display:grid;place-content:center;text-align:center;font-size:13px; }
+.earth-renderer { min-width:0; }
+.earth-tools { display:flex;gap:6px;justify-content:center;flex-wrap:wrap; }
+.earth-tools button { min-width:40px;min-height:40px;border:1px solid #456075;border-radius:8px;padding:6px 12px;font-size:12px; }
+.earth-tools button:hover { background:#203b52; }
+.earth-detail { min-height:34px;font-size:11px;color:#aab8cb;text-align:center;line-height:1.6;margin-top:12px; }
+.earth-renderer canvas { cursor:grab;display:block; }
+.earth-renderer canvas:active { cursor:grabbing; }
+.home-geospatial { display:grid;gap:24px; }
+@media(min-width:1024px) { .home-geospatial { grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:start; } .home-geospatial .mission-hero { padding-top:50px; border-bottom:0; } }
+@media print { .globe-panel { display:none; } }

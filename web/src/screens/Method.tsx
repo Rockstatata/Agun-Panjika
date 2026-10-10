@@ -1,3 +1,4 @@
+import { RequestStatus } from "../components/RequestStatus";
 import { useState } from "react";
 import { useFmt } from "../i18n";
 import { PartnerCheck } from "../components/PartnerCheck";
@@ -23,13 +24,14 @@ const SOURCES = [
 
 export function Method({ manifest }: { manifest: Manifest }) {
   const { t, num, num1, lang } = useFmt();
-  const { data: val } = useAsync(loadValidation, []);
-  const { data: partner } = useAsync(loadPartner, []);
-  const { data: bridge } = useAsync(loadBridge, []);
+  const { data: val,error:valError,loading:valLoading,retry:retryValidation } = useAsync(loadValidation, []);
+  const { data: partner,error:partnerError,loading:partnerLoading,retry:retryPartner } = useAsync(loadPartner, []);
+  const { data: bridge,error:bridgeError,loading:bridgeLoading,retry:retryBridge } = useAsync(loadBridge, []);
   const cov = val?.interval_coverage;
   type Score = Record<string, { abs_total: number }>;
   const b = bridge as unknown as { noaa20?: { loyo_score?: Score }; noaa21?: { loyo_score?: Score } } | undefined;
   const [copied, setCopied] = useState(false);
+  const [copyError,setCopyError]=useState<Error|undefined>();
   const cite = CITATION("2026", manifest.updated_utc.slice(0, 10));
   const nb = val?.final_fit.negbin;
   const s = Object.fromEntries((val?.summary ?? []).map((r) => [r.model, r]));
@@ -43,6 +45,9 @@ export function Method({ manifest }: { manifest: Manifest }) {
         <p className="mt-1 text-muted">{t("method.intro")}</p>
       </div>
 
+      <RequestStatus error={valError} loading={valLoading} retry={retryValidation}/>
+      <RequestStatus error={partnerError} loading={partnerLoading} retry={retryPartner}/>
+      <RequestStatus error={bridgeError} loading={bridgeLoading} retry={retryBridge}/>
       <section className="card flex flex-col gap-3 p-4 sm:p-6">
         <ol className="flex list-decimal flex-col gap-3 pl-5">
           <li>
@@ -126,7 +131,7 @@ export function Method({ manifest }: { manifest: Manifest }) {
         <p className="mt-1 text-sm">{t("method.limitsText")}</p>
       </section>
 
-      <section className="card flex flex-col gap-3 p-4 sm:p-6">
+      <section id="downloads" className="card flex flex-col gap-3 p-4 sm:p-6">
         <div className="flex flex-wrap gap-2">
           <a className="btn btn-primary" href={dataUrl("download/harmonised.csv")} download>
             {t("method.download")}
@@ -145,10 +150,12 @@ export function Method({ manifest }: { manifest: Manifest }) {
             type="button"
             className="btn"
             onClick={() => {
-              navigator.clipboard?.writeText(cite).then(() => {
+              setCopyError(undefined);
+              if(!navigator.clipboard){setCopyError(new Error(lang==='bn'?'ক্লিপবোর্ড পাওয়া যায়নি। লেখাটি নির্বাচন করে কপি করুন।':'Clipboard unavailable. Select and copy the citation text.'));return;}
+              navigator.clipboard.writeText(cite).then(() => {
                 setCopied(true);
                 setTimeout(() => setCopied(false), 2000);
-              });
+              }).catch(e=>setCopyError(e instanceof Error?e:new Error(String(e))));
             }}
           >
             {copied ? t("method.copied") : t("method.copy")}
@@ -156,11 +163,12 @@ export function Method({ manifest }: { manifest: Manifest }) {
         </div>
       </section>
 
+      <RequestStatus error={copyError}/>
       <section className="card p-4 sm:p-6">
         <h2 className="text-lg font-semibold">{t("method.sources")}</h2>
         <ul className="mt-2 flex list-disc flex-col gap-1 pl-5 text-sm">
           {SOURCES.map(([label, href]) => (
-            <li key={href}>
+            <li key={label}>
               <a href={href} target="_blank" rel="noreferrer" className="underline decoration-[var(--grid)] underline-offset-2">
                 {label}
               </a>

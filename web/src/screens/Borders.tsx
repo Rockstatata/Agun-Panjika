@@ -1,3 +1,4 @@
+import { RequestStatus } from "../components/RequestStatus";
 import { scaleLinear } from "d3-scale";
 import { line } from "d3-shape";
 import { useMemo, useState } from "react";
@@ -12,15 +13,14 @@ const COLORS = ["var(--accent)", "#3f7f9f", "#7a8f3a", "#8a5aa8", "#b08a2e"];
 
 export function Borders() {
   const { t } = useFmt();
-  const { data, error } = useAsync(loadNeighbours, []);
+  const { data, error,loading,retry } = useAsync(loadNeighbours, []);
   return (
     <div className="flex flex-col gap-5">
       <div>
         <h1 className="text-2xl font-bold sm:text-3xl">{t("borders.title")}</h1>
         <p className="mt-1 max-w-2xl text-muted">{t("borders.intro")}</p>
       </div>
-      {error && <p className="text-muted">{t("app.error", { msg: error.message })}</p>}
-      {!data && !error && <p className="text-muted">{t("app.loading")}</p>}
+      <RequestStatus error={error} loading={loading} retry={retry}/>
       {data && <Hills doc={data} />}
       {data && <Upwind doc={data} />}
     </div>
