@@ -1,3 +1,4 @@
+import { RequestStatus } from "../components/RequestStatus";
 import { useMemo, useState } from "react";
 import { CalendarHeatmap, CalendarLegend, CalendarTable } from "../components/CalendarHeatmap";
 import { RegionPicker } from "../components/RegionPicker";
@@ -27,10 +28,10 @@ export function Panjika({ manifest, params, setParams }: { manifest: Manifest; p
   const unitId = params.get("u") ?? "";
   const hl = Number(params.get("y")) || undefined;
   const [table, setTable] = useState(false);
-  const { data: doc, error } = useAsync(() => loadRegion(regionId), [regionId]);
+  const { data: doc, error,loading,retry } = useAsync(() => loadRegion(regionId), [regionId]);
   const localId = regionId.replace(/^d_/, "");
   const hasLocal = LOCAL_DISTRICTS.includes(localId);
-  const { data: local } = useAsync<LocalDoc | undefined>(() => (hasLocal ? loadLocal(localId) : Promise.resolve(undefined)), [localId]);
+  const { data: local,error:localError,loading:localLoading,retry:retryLocal } = useAsync<LocalDoc | undefined>(() => (hasLocal ? loadLocal(localId) : Promise.resolve(undefined)), [localId]);
   const units = useMemo(() => {
     if (!local) return [];
     const lvl = local.levels[level] ?? {};
@@ -87,7 +88,8 @@ export function Panjika({ manifest, params, setParams }: { manifest: Manifest; p
         {doc && <label className="flex flex-col gap-1"><span className="eyebrow">{t("home.year")}</span><select className="select" value={hl ?? doc.season.year} onChange={e=>setParams({y:e.target.value,w:undefined})}>{[...new Set(doc.weeks.map(w=>w.y))].map(y=><option key={y} value={y}>{y<2012?'≈ ':''}{fy(y)}</option>)}</select></label>}
       </div>
       {hasLocal && <p className="text-xs text-muted">{t("local.note")}</p>}
-      {error && <p role="alert">{t("app.error", { msg: error.message })}</p>}
+      <RequestStatus error={error} loading={loading} retry={retry}/>
+      {hasLocal&&<RequestStatus error={localError} loading={localLoading} retry={retryLocal}/>}
       {shown && doc && (
         <div className="card p-3 sm:p-5">
           {unit && <h2 className="mb-2 text-lg font-semibold">{unit.label}</h2>}

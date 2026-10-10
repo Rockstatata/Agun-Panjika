@@ -1,3 +1,4 @@
+import { RequestStatus } from "../components/RequestStatus";
 import maplibregl, { type GeoJSONSource, type Map as MLMap } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -44,9 +45,9 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
   const { t, num, date, year: fy, lang } = useFmt();
   const years = manifest.years.filter((y) => y >= 2001);
   const year = Number(params.get("y")) || manifest.data_through.iso_year;
-  const { data: dy } = useAsync(() => loadDistrictYear(year), [year]);
-  const { data: pts } = useAsync(() => loadPoints(year), [year]);
-  const { data: geo } = useAsync(loadGeo, []);
+  const { data: dy,error:dyError,loading:dyLoading,retry:retrydy } = useAsync(() => loadDistrictYear(year), [year]);
+  const { data: pts,error:ptsError,loading:ptsLoading,retry:retrypts } = useAsync(() => loadPoints(year), [year]);
+  const { data: geo,error:geoError,loading:geoLoading,retry:retrygeo } = useAsync(loadGeo, []);
   const maxWeek = useMemo(() => {
     if (!dy) return 52;
     return Math.max(...Object.values(dy.districts).map((d) => d.pct.length));
@@ -218,6 +219,9 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
     <div className="flex flex-col gap-3">
       <h1 className="text-2xl font-bold sm:text-3xl">{t("map.title")}</h1>
       <RegionPicker manifest={manifest} value={region} onChange={r=>setParams({r})} id="map-region"/>
+      <RequestStatus error={dyError} loading={dyLoading} retry={retrydy}/>
+      <RequestStatus error={ptsError} loading={ptsLoading} retry={retrypts}/>
+      <RequestStatus error={geoError} loading={geoLoading} retry={retrygeo}/>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-[1fr_3fr]">
         <label className="flex flex-col gap-1">
           <span className="eyebrow">{t("map.year")}</span>
