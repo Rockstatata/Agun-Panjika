@@ -57,6 +57,11 @@ export function Sensors({ manifest, params, setParams }: { manifest: Manifest; p
           </div>
         </div>
         <div className="flex flex-wrap gap-2" role="group" aria-label={t("sensors.annual")}>
+          <div className="sensor-story" role="group" aria-label={t("sensors.intro")}>
+            <button type="button" className="chip" onClick={()=>setOn(["modis","viirs"])}>{t("sensors.rawModis")} + {t("sensors.rawViirs")}</button>
+            <span aria-hidden="true">→</span><button type="button" className="chip" onClick={()=>setOn(["viirs","naive"])}>{t("sensors.naive", { k:num1(k) })}</button>
+            <span aria-hidden="true">→</span><button type="button" className="chip" onClick={()=>setOn(["viirs","harm"])}>{t("sensors.harmonised")}</button>
+          </div>
           {ALL.map((s) => (
             <button
               key={s}

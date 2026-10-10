@@ -17,6 +17,11 @@
 @media (min-width: 1024px) { .primary-desktop { display: flex; } .primary-mobile { display: none; } }
 @media (max-width: 420px) { header > div { gap: 6px !important; } header .text-lg { font-size: 15px; } header .text-xs { font-size: 10px; } header .btn { padding-left: 8px; padding-right: 8px; } }
 @media print { .primary-mobile, .primary-desktop, .more-menu { display: none !important; } }
+.sensor-story { display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--grid);border-bottom:1px solid var(--grid);width:100%; }
+.chart-provenance { display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin-top:8px; }
+.calendar-selection { background:var(--zero);border-left:3px solid var(--accent); }
+[role="gridcell"] { cursor:pointer;transition:opacity 120ms ease; }
+[role="gridcell"]:hover { stroke:var(--ink);stroke-width:2; }
 
 /* Almanac, not a dashboard: warm paper, ink text, ember only for fire. */
 :root {
