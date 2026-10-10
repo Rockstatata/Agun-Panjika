@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { CalendarHeatmap, CalendarLegend, CalendarTable } from "../components/CalendarHeatmap";
 import { RegionPicker } from "../components/RegionPicker";
 import { useFmt } from "../i18n";
+import { WeekTip } from "../components/WeekCell";
 import { loadLocal, loadRegion, useAsync } from "../lib/data";
 import type { LocalDoc, Manifest, RegionDoc, Week } from "../lib/types";
 
@@ -21,7 +22,7 @@ function localDoc(region: RegionDoc, years: Record<string, (number | null)[]>, n
 }
 
 export function Panjika({ manifest, params, setParams }: { manifest: Manifest; params: URLSearchParams; setParams: (p: Record<string, string | number | undefined>) => void }) {
-  const { t, lang, num } = useFmt();
+  const { t, lang, num, year:fy } = useFmt();
   const regionId = params.get("r") ?? "bgd";
   const level = (params.get("lv") as "upazila" | "union") ?? "upazila";
   const unitId = params.get("u") ?? "";
@@ -84,6 +85,7 @@ export function Panjika({ manifest, params, setParams }: { manifest: Manifest; p
         <button type="button" className="chip" aria-pressed={table} onClick={() => setTable((v) => !v)}>
           {table ? t("calendar.chartView") : t("calendar.tableView")}
         </button>
+        {doc && <label className="flex flex-col gap-1"><span className="eyebrow">{t("home.year")}</span><select className="select" value={hl ?? doc.season.year} onChange={e=>setParams({y:e.target.value,w:undefined})}>{[...new Set(doc.weeks.map(w=>w.y))].map(y=><option key={y} value={y}>{y<2012?'≈ ':''}{fy(y)}</option>)}</select></label>}
       </div>
       {hasLocal && <p className="text-xs text-muted">{t("local.note")}</p>}
       <RequestStatus error={error} loading={loading} retry={retry}/>
@@ -100,10 +102,13 @@ export function Panjika({ manifest, params, setParams }: { manifest: Manifest; p
                 series="harm"
                 highlightYear={hl ?? doc.season.year}
                 onSelectYear={(y) => setParams({ y: hl === y ? undefined : y })}
+                markWeek={Number(params.get("w")) || undefined}
+                onSelectWeek={(y,w) => setParams({ y,w })}
               />
               <div className="mt-3">
                 <CalendarLegend doc={shown} />
               </div>
+              {params.has("w") && <div className="calendar-selection rounded-xl border border-grid p-4 mt-3" aria-live="polite"><WeekTip wk={shown.weeks.find(w=>w.y===(hl??doc.season.year)&&w.w===Number(params.get("w")))} y={hl??doc.season.year} w={Number(params.get("w"))}/></div>}
               <p className="mt-2 text-xs text-muted">
                 {t("calendar.highlight")} · {t("calendar.keyboard")}
               </p>

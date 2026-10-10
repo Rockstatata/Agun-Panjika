@@ -3,10 +3,12 @@ import maplibregl, { type GeoJSONSource, type Map as MLMap } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { LevelIcon } from "../components/LevelBadge";
+import { RegionPicker } from "../components/RegionPicker";
 import { useFmt } from "../i18n";
 import { loadDistrictYear, loadGeo, loadPoints, useAsync } from "../lib/data";
 import { isoWeekStart } from "../lib/series";
 import { LEVEL_FROM_CODE, type Level, type Manifest } from "../lib/types";
+import { boundsOf, contains } from "../lib/mapSpatial";
 
 const LEVELS: Level[] = ["below", "normal", "above", "extreme", "quiet"];
 
@@ -50,9 +52,16 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
     if (!dy) return 52;
     return Math.max(...Object.values(dy.districts).map((d) => d.pct.length));
   }, [dy]);
-  const defaultWeek = year === manifest.data_through.iso_year ? manifest.data_through.iso_week : 14;
-  const week = Math.min(Number(params.get("w")) || defaultWeek, maxWeek);
-  const [hideKilns, setHideKilns] = useState(true);
+  const defaultWeek = year === manifest.data_through.iso_year ? manifest.data_through.iso_week : maxWeek;
+  const week = Math.max(1,Math.min(Number(params.get("w")) || defaultWeek, maxWeek));
+  const region = params.get("r") ?? "bgd";
+  const selectedAreas = useMemo(()=>geo?.features.filter(f=>region==='bgd'||region===`d_${f.properties?.district_id}`||manifest.districts.some(d=>d.district_id===f.properties?.district_id&&d.region_id===region))??[],[geo,region,manifest]);
+  const [showDistricts,setShowDistricts]=useState(true);
+  const [showPoints,setShowPoints]=useState(true);
+  const [mapError,setMapError]=useState<string|null>(null);
+  const [mapAttempt,setMapAttempt]=useState(0);
+  const hideKilns = params.get("kilns") !== "1";
+  const setHideKilns = (fn: (v: boolean) => boolean) => setParams({ kilns: fn(hideKilns) ? "0" : "1" });
   const [table, setTable] = useState(false);
   const mapDiv = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap | null>(null);
@@ -81,19 +90,22 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
     const a = pts.pts;
     for (let i = 0; i < a.length; i += pts.stride) {
       if (a[i + 2] !== week) continue;
+      if(region!=='bgd'&&!selectedAreas.some(f=>contains(f,a[i],a[i+1])))continue;
       const status = a[i + 3];
       if (status === 2) removed++;
       if (status === 0) continue;
-      kept.push({ type: "Feature", properties: { status }, geometry: { type: "Point", coordinates: [a[i], a[i + 1]] } });
+      if(status===2&&hideKilns)continue;
+      kept.push({ type: "Feature", properties: { status, lon:a[i],lat:a[i+1],week }, geometry: { type: "Point", coordinates: [a[i], a[i + 1]] } });
     }
-    return { fc: { type: "FeatureCollection", features: kept } as GeoJSON.FeatureCollection, kept: kept.length - removed, removed };
-  }, [pts, week]);
+    return { fc: { type: "FeatureCollection", features: kept } as GeoJSON.FeatureCollection, kept: kept.filter(f=>f.properties?.status===1).length, removed };
+  }, [pts, week,region,selectedAreas,hideKilns]);
 
   // Create the map once.
   useEffect(() => {
     if (!mapDiv.current || mapRef.current) return;
     const [w, s, e, n] = manifest.country.bbox;
-    const map = new maplibregl.Map({
+    let map:MLMap;
+    try { map = new maplibregl.Map({
       container: mapDiv.current,
       style: STYLE(dark),
       bounds: [
@@ -103,7 +115,9 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
       fitBoundsOptions: { padding: 10 },
       attributionControl: { compact: true },
       cooperativeGestures: window.innerWidth < 640,
-    });
+    }); } catch(error) {setMapError((error as Error).message);return;}
+    setMapError(null);
+    map.on('error',()=>setMapError(lang==='bn'?'বেসম্যাপ লোড হয়নি। জেলা সারণি ব্যবহার করুন।':'Basemap could not load. The district table remains available.'));
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     // React StrictMode mounts twice: readiness must belong to this map instance.
     setReady(false);
@@ -114,12 +128,12 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
       map.remove();
       mapRef.current = null;
     };
-  }, [manifest, dark]);
+  }, [manifest, dark,mapAttempt]);
 
   // Add / update sources and layers.
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !ready || !geo || !map.isStyleLoaded()) return;
+    if (!map || !ready || !geo) return;
     const fc: GeoJSON.FeatureCollection = {
       type: "FeatureCollection",
       features: geo.features.map((f) => {
@@ -141,19 +155,21 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
         },
       });
       map.addLayer({ id: "district-line", type: "line", source: "districts", paint: { "line-color": cssVar("--muted"), "line-width": 0.6 } });
-      map.addSource("points", { type: "geojson", data: weekPoints.fc });
+      map.addSource("points", { type: "geojson", data: weekPoints.fc,cluster:true,clusterRadius:35,clusterMaxZoom:9 });
+      map.addLayer({id:'point-clusters',type:'circle',source:'points',filter:['has','point_count'],paint:{'circle-color':cssVar('--accent'),'circle-radius':['step',['get','point_count'],14,50,20,200,26],'circle-opacity':.8,'circle-stroke-color':cssVar('--paper'),'circle-stroke-width':2}});
+      map.addLayer({id:'cluster-count',type:'symbol',source:'points',filter:['has','point_count'],layout:{'text-field':['number-format',['get','point_count'],{locale:lang}],'text-size':12,'text-font':['Noto Sans Regular']},paint:{'text-color':cssVar('--paper')}});
       map.addLayer({
         id: "points-static",
         type: "circle",
         source: "points",
-        filter: ["==", ["get", "status"], 2],
+        filter: ["all",["!",["has","point_count"]],["==", ["get", "status"], 2]],
         paint: { "circle-radius": 4, "circle-color": "#5b7a8c", "circle-stroke-color": "#ffffff", "circle-stroke-width": 1 },
       });
       map.addLayer({
         id: "points-fire",
         type: "circle",
         source: "points",
-        filter: ["==", ["get", "status"], 1],
+        filter: ["all",["!",["has","point_count"]],["==", ["get", "status"], 1]],
         paint: {
           "circle-radius": ["interpolate", ["linear"], ["zoom"], 6, 2.2, 10, 5],
           "circle-color": cssVar("--ramp-4"),
@@ -162,16 +178,6 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
           "circle-opacity": 0.9,
         },
       });
-      map.on("click", "district-fill", (e) => {
-        const p = e.features?.[0]?.properties as { name: string; level: Level; pct: number; harm: number } | undefined;
-        if (!p) return;
-        new maplibregl.Popup({ closeButton: true })
-          .setLngLat(e.lngLat)
-          .setHTML(
-            `<strong>${p.name}</strong><br/>${t(`level.${p.level}`)}${p.level !== "quiet" ? ` · ${t("map.pct")} ${num(p.pct)}` : ""}<br/>${t("map.count", { n: num(p.harm) })}`,
-          )
-          .addTo(map);
-      });
       map.on("mouseenter", "district-fill", () => (map.getCanvas().style.cursor = "pointer"));
       map.on("mouseleave", "district-fill", () => (map.getCanvas().style.cursor = ""));
     } else {
@@ -179,8 +185,31 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
       (map.getSource("points") as GeoJSONSource).setData(weekPoints.fc);
     }
     map.setLayoutProperty("points-static", "visibility", hideKilns ? "none" : "visible");
+    map.setLayoutProperty('district-fill','visibility',showDistricts?'visible':'none');
+    for(const id of ['points-fire','point-clusters','cluster-count'])map.setLayoutProperty(id,'visibility',showPoints?'visible':'none');
+    if(!showPoints)map.setLayoutProperty('points-static','visibility','none');
+    map.setLayoutProperty('cluster-count','text-field',['number-format',['get','point_count'],{locale:lang}]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, geo, districtState, weekPoints, hideKilns, lang]);
+  }, [ready, geo, districtState, weekPoints, hideKilns, lang,showPoints,showDistricts]);
+
+  useEffect(()=>{
+    const map=mapRef.current;if(!map||!ready)return;
+    const bounds=boundsOf(selectedAreas);if(bounds)map.fitBounds(bounds,{padding:40,maxZoom:9,duration:window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:650});
+  },[ready,selectedAreas]);
+  useEffect(()=>{
+    const map=mapRef.current;if(!map||!ready)return;
+    const click=(e:maplibregl.MapMouseEvent)=>{
+      const layers=['points-fire','points-static','point-clusters','district-fill'].filter(id=>map.getLayer(id));
+      const f=map.queryRenderedFeatures(e.point,{layers})[0];if(!f)return;
+      if(f.properties?.cluster){const coordinates=(f.geometry as GeoJSON.Point).coordinates;void (map.getSource('points') as GeoJSONSource).getClusterExpansionZoom(f.properties.cluster_id).then(zoom=>map.easeTo({center:[coordinates[0],coordinates[1]],zoom,duration:window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:500}));return;}
+      const box=document.createElement('div');const p=f.properties??{};
+      const isPoint=f.geometry.type==='Point';const title=document.createElement('strong');title.textContent=isPoint?`${Number(p.lon).toFixed(3)}° E, ${Number(p.lat).toFixed(3)}° N`:dname(p.district_id);box.append(title);
+      const info=document.createElement('p');info.textContent=isPoint?`${sensorName} · W${num(week)} · ${p.status===2?(lang==='bn'?'স্থির উৎস':'Static source'):(lang==='bn'?'শনাক্ত আগুন':'Retained detection')}`:`${t(`level.${p.level}`)} · ${t('map.count',{n:num(p.harm)})}`;box.append(info);
+      if(!isPoint){const button=document.createElement('button');button.className='btn';button.textContent=lang==='bn'?'জেলা নির্বাচন':'Select district';button.onclick=()=>setParams({r:`d_${p.district_id}`});box.append(button)}
+      new maplibregl.Popup().setLngLat(e.lngLat).setDOMContent(box).addTo(map);
+    };
+    map.on('click',click);return()=>{map.off('click',click)};
+  },[ready,lang,week,pts,setParams]);
 
   const weekEnd = new Date(isoWeekStart(year, week).getTime() + 6 * 86400000);
   const sensorName = pts ? { snpp: "VIIRS S-NPP", noaa20: "VIIRS NOAA-20", modis: "MODIS", noaa21: "VIIRS NOAA-21" }[pts.sensor] ?? pts.sensor : "";
@@ -192,6 +221,7 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
       <RequestStatus error={dyError} loading={dyLoading} retry={retrydy}/>
       <RequestStatus error={ptsError} loading={ptsLoading} retry={retrypts}/>
       <RequestStatus error={geoError} loading={geoLoading} retry={retrygeo}/>
+      <RegionPicker manifest={manifest} value={region} onChange={r=>setParams({r})} id="map-region"/>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-[1fr_3fr]">
         <label className="flex flex-col gap-1">
           <span className="eyebrow">{t("map.year")}</span>
@@ -212,6 +242,8 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
         </label>
       </div>
       <div className="flex flex-wrap gap-2">
+        <button type="button" className="chip" aria-pressed={showDistricts} onClick={()=>setShowDistricts(v=>!v)}>{lang==='bn'?'জেলার স্তর':'District layer'}</button>
+        <button type="button" className="chip" aria-pressed={showPoints} onClick={()=>setShowPoints(v=>!v)}>{lang==='bn'?'অগ্নি শনাক্তকরণ':'Hotspot layer'}</button>
         <button type="button" className="chip" aria-pressed={hideKilns} onClick={() => setHideKilns((v) => !v)}>
           {t("map.kiln")}
         </button>
@@ -222,7 +254,8 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
       <div className="card relative overflow-hidden" style={{ height: "min(70vh, 560px)" }}>
         {/* maplibre sets position: relative on its container, so size it with height, not inset */}
         <div ref={mapDiv} style={{ width: "100%", height: "100%" }} aria-label={t("map.title")} role="region" />
-        {!ready && <div className="absolute inset-0 grid place-items-center text-muted">{t("map.loadingMap")}</div>}
+        {!ready && !mapError && <div className="absolute inset-0 grid place-items-center text-muted">{t("map.loadingMap")}</div>}
+        {mapError && <div className="absolute bottom-3 left-3 right-3 rounded-lg bg-[var(--card)] p-3 text-sm" role="status">{mapError} <button type="button" className="btn ml-2" onClick={()=>setMapAttempt(n=>n+1)}>{lang==='bn'?'আবার চেষ্টা':'Retry map'}</button></div>}
       </div>
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
         <span>{t("map.colour")}:</span>
@@ -236,7 +269,8 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
         {t("map.dots")} · {t("map.sensor", { sensor: sensorName })} · {weekPoints.kept ? t("map.count", { n: num(weekPoints.kept) }) : t("map.noDots")}
         {weekPoints.removed > 0 && <> · {t("map.removed", { n: num(weekPoints.removed) })}</>}
       </div>
-      {table && (
+      <p className="text-xs text-muted">{lang==='bn'?'সংরক্ষিত সাপ্তাহিক পর্যবেক্ষণ। VIIRS: মাঝারি/উচ্চ আস্থা; MODIS: ≥৩০। প্রতিটি বিন্দুর আস্থা ও সময় এই রপ্তানিতে নেই।':'Archived weekly observations. VIIRS: nominal/high confidence; MODIS: ≥30. Individual confidence and acquisition times are not present in this export.'}</p>
+      {(table || mapError) && (
         <div className="card overflow-x-auto p-3">
           <table className="data-table">
             <thead>

@@ -1,6 +1,6 @@
 import { RequestStatus } from "../components/RequestStatus";
 import { scaleBand, scaleLinear } from "d3-scale";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { AnnualChart, SERIES_STYLE } from "../components/AnnualChart";
 import { RegionPicker } from "../components/RegionPicker";
 import { Sonify } from "../components/Sonify";
@@ -18,16 +18,19 @@ export function Sensors({ manifest, params, setParams }: { manifest: Manifest; p
   const regionId = params.get("r") ?? "bgd";
   const { data: doc,error,loading,retry } = useAsync(() => loadRegion(regionId), [regionId]);
   const { data: val,error:valError,loading:valLoading,retry:retryVal } = useAsync(loadValidation, []);
-  const [on, setOn] = useState<SeriesKey[]>(["modis", "viirs"]);
-  const [withKilns, setWithKilns] = useState(false);
+  const on = (params.get("s") ?? "modis,viirs").split(",").filter((k): k is SeriesKey => ALL.includes(k as SeriesKey));
+  const setOn = (next: SeriesKey[] | ((cur: SeriesKey[]) => SeriesKey[])) => setParams({ s: (typeof next === "function" ? next(on) : next).join(",") });
+  const withKilns = params.get("kilns") === "1";
+  const setWithKilns = (v: boolean) => setParams({ kilns: v ? "1" : "0" });
   const rows = useMemo(() => {
     const r = doc ? annual(doc).filter((x) => x.complete) : [];
     // "Include kilns": the same record without the static-source filter (no band; bands are for the filtered record).
     return withKilns ? r.map((x) => ({ ...x, harm: x.all ?? x.harm, lo: x.all ?? x.harm, hi: x.all ?? x.harm })) : r;
   }, [doc, withKilns]);
   const years = rows.map((r) => r.y);
-  const [range, setRange] = useState<[number, number] | null>(null);
-  const [from, to] = range ?? [years[0] ?? 2003, years[years.length - 1] ?? 2024];
+  const from = Number(params.get("from")) || years[0] || 2003;
+  const to = Number(params.get("to")) || years[years.length - 1] || 2024;
+  const setRange = ([from, to]: [number, number]) => setParams({ from, to });
   const k = manifest.naive_factor;
   const labels: Record<SeriesKey, string> = {
     modis: t("sensors.rawModis"),
@@ -55,6 +58,11 @@ export function Sensors({ manifest, params, setParams }: { manifest: Manifest; p
           </div>
         </div>
         <div className="flex flex-wrap gap-2" role="group" aria-label={t("sensors.annual")}>
+          <div className="sensor-story" role="group" aria-label={t("sensors.intro")}>
+            <button type="button" className="chip" onClick={()=>setOn(["modis","viirs"])}>{t("sensors.rawModis")} + {t("sensors.rawViirs")}</button>
+            <span aria-hidden="true">→</span><button type="button" className="chip" onClick={()=>setOn(["viirs","naive"])}>{t("sensors.naive", { k:num1(k) })}</button>
+            <span aria-hidden="true">→</span><button type="button" className="chip" onClick={()=>setOn(["viirs","harm"])}>{t("sensors.harmonised")}</button>
+          </div>
           {ALL.map((s) => (
             <button
               key={s}
@@ -196,7 +204,7 @@ function ValidationSection({ val }: { val: ValidationDoc }) {
   const yS = scaleLinear().domain([0, Math.max(...per.map((p) => Math.max(p.naive, p.ours))) * 1.1]).range([h - mg.b, mg.t]).nice();
   const bw = x.bandwidth() / 2;
   return (
-    <section className="card p-3 sm:p-5" aria-labelledby="val-h">
+    <section id="validation" className="card p-3 sm:p-5" aria-labelledby="val-h">
       <h2 id="val-h" className="text-lg font-semibold">
         {t("sensors.validationTitle")}
       </h2>

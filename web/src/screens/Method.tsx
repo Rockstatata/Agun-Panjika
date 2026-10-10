@@ -131,7 +131,7 @@ export function Method({ manifest }: { manifest: Manifest }) {
         <p className="mt-1 text-sm">{t("method.limitsText")}</p>
       </section>
 
-      <section className="card flex flex-col gap-3 p-4 sm:p-6">
+      <section id="downloads" className="card flex flex-col gap-3 p-4 sm:p-6">
         <div className="flex flex-wrap gap-2">
           <a className="btn btn-primary" href={dataUrl("download/harmonised.csv")} download>
             {t("method.download")}
