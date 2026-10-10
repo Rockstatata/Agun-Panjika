@@ -1,5 +1,5 @@
 import { chromium } from 'playwright';
-import { geoOrthographic } from 'd3-geo';
+import { PerspectiveCamera, Vector3 } from 'three';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -70,15 +70,17 @@ try {
   ];
   const canvas = page.locator('.earth-renderer canvas');
   const box = await canvas.boundingBox();
-  const projection = geoOrthographic().rotate([-center[0], -center[1]])
-    .scale(Math.min(box.width, box.height) * .44 * 4).translate([box.width / 2, box.height / 2]);
+  const position = (lon, lat, radius=1) => {const phi=lat*Math.PI/180,theta=lon*Math.PI/180;return new Vector3(Math.cos(phi)*Math.cos(theta),Math.sin(phi),-Math.cos(phi)*Math.sin(theta)).multiplyScalar(radius);};
+  const camera = new PerspectiveCamera(40, box.width/box.height, .01, 30);
+  camera.position.copy(position(...center,1.3));camera.lookAt(0,0,0);camera.updateMatrixWorld();
   let point;
   for (let i = 0; i < pointDoc.pts.length; i += pointDoc.stride) {
     const p = pointDoc.pts.slice(i, i + 4);
     if (p[2] === 14 && p[3] === 1) { point = p; break; }
   }
   assert.ok(point);
-  const projected = projection(point);
+  const projectedVector = position(point[0],point[1],1.007).project(camera);
+  const projected = [(projectedVector.x+1)/2*box.width,(1-projectedVector.y)/2*box.height];
   await canvas.click({ position: { x: projected[0], y: projected[1] } });
   await page.waitForURL(/r=d_/);
 

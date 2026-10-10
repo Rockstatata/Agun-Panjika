@@ -359,4 +359,7 @@ html[lang="bn"] body { line-height:1.7; }
 .primary-desktop button { border-radius:28px;padding:12px 22px;color:var(--ink); }
 .primary-desktop [aria-current] { background:color-mix(in srgb,var(--accent) 8%,var(--card));color:var(--accent); }
 .app-header .btn { border-radius:26px; }
+/* Keep Chromium's opaque-layer occlusion from clipping the WebGL canvas
+   behind a fixed bottom bar. The 98% surface remains visually solid. */
+.primary-mobile { background:color-mix(in srgb,var(--paper) 98%,transparent); }
 @media(max-width:639px) { .app-header-inner { padding:10px 12px;min-height:68px; } }

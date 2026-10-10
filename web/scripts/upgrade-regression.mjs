@@ -6,7 +6,7 @@ import path from 'node:path';
 const base = process.argv[2] ?? 'http://127.0.0.1:5270';
 const out = path.resolve(process.argv[3] ?? 'test-results/upgrade');
 await fs.mkdir(out, { recursive: true });
-const cases = ['smoke', 'navigation', 'globe', 'charts', 'map', 'reliability', 'demo', 'exports', 'scientific'];
+const cases = ['smoke', 'navigation', 'globe', 'earth3d', 'charts', 'map', 'reliability', 'demo', 'exports', 'scientific'];
 if (process.env.UPGRADE_OFFLINE === '1') cases.push('offline');
 const results = [];
 for (const name of cases) {

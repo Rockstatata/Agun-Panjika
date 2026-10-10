@@ -70,7 +70,9 @@ export default function App() {
         <div className="app-header-inner mx-auto flex items-center justify-between gap-3 px-4 py-3">
           <button type="button" onClick={() => go("home", carry)} className="flex items-center gap-2 text-left">
             <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
-              <path d="M16 2c2 6 9 9 9 17a9 9 0 0 1-18 0c0-5 3-7 4-11 1 3 2 4 3 5 1-4 2-7 2-11z" fill="var(--accent)" />
+              <defs><linearGradient id="brand-flame" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#e65c35" /><stop offset="1" stopColor="#ffbc67" /></linearGradient></defs>
+              <path d="M16 2c2 6 9 9 9 17a9 9 0 0 1-18 0c0-5 3-7 4-11 1 3 2 4 3 5 1-4 2-7 2-11z" fill="url(#brand-flame)" />
+              <path d="M16 16c0 4-4 5-4 9a4 4 0 0 0 8 0c0-3-2-5-4-9Z" fill="#fff9ed" />
             </svg>
             <span className="leading-tight">
               <span className="block text-lg font-bold">{t("app.title")}</span>

@@ -21,7 +21,8 @@
     "maplibre-gl": "^4.7.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-i18next": "^15.1.4"
+    "react-i18next": "^15.1.4",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
@@ -32,6 +33,7 @@
     "@types/d3-shape": "^3.1.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "playwright": "1.64.0",

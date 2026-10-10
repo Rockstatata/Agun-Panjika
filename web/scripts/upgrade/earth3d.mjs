@@ -1,0 +1,97 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+const [base, output = 'test-results/upgrade'] = process.argv.slice(2);
+await fs.mkdir(output, { recursive: true });
+const browser = await chromium.launch();
+try {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, reducedMotion: 'reduce', serviceWorkers: 'block' });
+  await context.addInitScript(() => {
+    window.__draws = 0;
+    for (const method of ['drawArrays', 'drawElements']) {
+      const original = WebGL2RenderingContext.prototype[method];
+      WebGL2RenderingContext.prototype[method] = function (...args) { window.__draws++; return original.apply(this, args); };
+    }
+  });
+  const page = await context.newPage();
+  const errors = []; page.on('pageerror', e => errors.push(e.message));
+  const url = `${base}/?lang=en&theme=light#/home?r=bgd&y=2024&w=14`;
+  await page.goto(url);
+  await page.locator('.earth-realistic[data-ready="true"]').waitFor();
+  await page.waitForTimeout(1000);
+  const canvas = page.locator('.earth-realistic canvas');
+  const before = await canvas.screenshot();
+  const drawCount = await page.evaluate(() => window.__draws);
+  await page.waitForTimeout(500);
+  assert.equal(await page.evaluate(() => window.__draws), drawCount, 'Idle globe must not continuously draw');
+  await page.getByRole('button', { name: 'Zoom in', exact: true }).click();
+  assert.notDeepEqual(await canvas.screenshot(), before);
+  await page.getByRole('button', { name: 'Reset view', exact: true }).click();
+  await page.locator('.earth-scene').focus(); await page.keyboard.press('ArrowRight');
+  assert.notDeepEqual(await canvas.screenshot(), before);
+  await page.getByRole('button', { name: 'Reset view', exact: true }).click();
+  await page.getByRole('button', { name: 'Satellite View', exact: true }).click();
+  assert.notDeepEqual(await canvas.screenshot(), before, 'Satellite mode removes fire markers');
+  await page.getByRole('button', { name: 'Hotspots', exact: true }).click();
+  const points = await (await context.request.get(`${base}/data/points/2024.json`)).json();
+  const expected = include => {
+    let n = 0; for (let i = 0; i < points.pts.length; i += points.stride) if (points.pts[i + 2] === 14 && (points.pts[i + 3] === 1 || include && points.pts[i + 3] === 2)) n++;
+    return n.toLocaleString('en');
+  };
+  assert.match(await page.locator('.stat-value').innerText(), new RegExp(expected(false)));
+  await page.getByLabel('Include static sources', { exact: true }).check();
+  assert.match(await page.locator('.stat-value').innerText(), new RegExp(expected(true)));
+  await page.getByLabel('Search location', { exact: true }).fill('Bandarban');
+  await page.locator('#earth-search-results').getByRole('button', { name: 'Bandarban District', exact: true }).click();
+  await page.waitForURL(/r=d_bandarban/);
+  assert.equal(await page.locator('#region').inputValue(), 'd_bandarban');
+  await page.locator('#earth-year').selectOption('2023'); await page.waitForURL(/y=2023/);
+  await page.locator('#earth-week').fill('16'); await page.waitForURL(/w=16/);
+  await page.waitForFunction(() => document.querySelector('.globe-provenance').textContent.includes('W16'));
+  await page.getByRole('button', { name: '2D map', exact: true }).click();
+  await page.locator('.earth-renderer:not(.earth-realistic) canvas').waitFor();
+  await page.getByRole('button', { name: 'Globe', exact: true }).click();
+  await page.locator('.earth-realistic[data-ready="true"]').waitFor();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(250);
+  const box = await canvas.boundingBox(); assert.ok(box.width <= 390 && box.height <= 360);
+  assert.equal(await page.locator('.observatory-controls').getAttribute('open'), null);
+  await page.locator('.observatory-controls summary').click();
+  assert.equal(await page.locator('#earth-region').isVisible(), true);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+  await page.goto(url);
+  await page.locator('.earth-realistic[data-ready="true"]').waitFor();
+  await page.waitForTimeout(300);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(100);
+  const mobileScreenshot = await page.screenshot({path:path.join(output,'mobile-pixel-check.png')});
+  const difference = await page.evaluate(async encoded => {
+    const canvas = document.querySelector('.earth-scene canvas'), rect = canvas.getBoundingClientRect();
+    const screenshot = new Image(), buffer = new Image();
+    screenshot.src = `data:image/png;base64,${encoded}`; buffer.src = canvas.toDataURL();
+    await Promise.all([screenshot.decode(), buffer.decode()]);
+    const sample = (image, x, y) => { const c = document.createElement('canvas'); c.width = image.width; c.height = image.height; const ctx = c.getContext('2d'); ctx.drawImage(image, 0, 0); return ctx.getImageData(x, y, 1, 1).data; };
+    const x = Math.floor(rect.width / 2), y = 65;
+    const visible = sample(screenshot, Math.floor(rect.x) + x, Math.floor(rect.y) + y);
+    const rendered = sample(buffer, x * canvas.width / rect.width, y * canvas.height / rect.height);
+    return Math.abs(visible[0] - rendered[0]) + Math.abs(visible[1] - rendered[1]) + Math.abs(visible[2] - rendered[2]);
+  }, mobileScreenshot.toString('base64'));
+  assert.ok(difference < 35, `Fixed mobile navigation must not clip the visible Earth (RGB difference ${difference})`);
+  await canvas.evaluate(el => el.dispatchEvent(new Event('webglcontextlost', { cancelable: true })));
+  await page.getByText('3D imagery is unavailable on this device. Showing the interactive 2D map.', { exact: true }).waitFor();
+  await page.locator('.earth-renderer:not(.earth-realistic) canvas').waitFor();
+  const failed = await context.newPage();
+  await failed.route('**/earth/2k_earth_daymap.jpg', route => route.abort());
+  await failed.goto(url);
+  await failed.locator('.earth-renderer:not(.earth-realistic) canvas').waitFor();
+  assert.equal(await failed.getByRole('button', { name: 'Explore Fire Map', exact: true }).isVisible(), true);
+  const lazy = await context.newPage(); const earthRequests = [];
+  lazy.on('request', request => { if (/\/earth\/|Earth3D/.test(request.url())) earthRequests.push(request.url()); });
+  await lazy.goto(`${base}/?lang=en#/sensors?r=bgd`); await lazy.locator('main h1').waitFor();
+  assert.deepEqual(earthRequests, [], 'Other scientific routes must not load Three or Earth textures');
+  assert.deepEqual(errors, []);
+  await fs.writeFile(path.join(output, 'earth3d.json'), JSON.stringify({ texturedWebGL: true, demandRendering: true, keyboardZoom: true, modes: true, actualDetectionCounts: true, searchPeriodSync: true, responsiveResize: true, contextLossFallback: true, textureFailureFallback: true, lazyOtherRoutes: true, pageErrors: errors }, null, 2));
+  console.log('PASS: textured WebGL, idle draw count, modes, real counts, linked search/time, resize, fallbacks and lazy loading');
+} finally { await browser.close(); }

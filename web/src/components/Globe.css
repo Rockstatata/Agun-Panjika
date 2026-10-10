@@ -28,3 +28,15 @@ html[lang="bn"] .observatory h1 { font-family:'Noto Sans Bengali',sans-serif;fon
 @media(max-width:1023px) { .observatory { grid-template-columns:minmax(0,1fr) minmax(220px,.6fr);grid-template-areas:"hero controls" "world controls" "stats stats";gap:24px;padding-top:6px; }.observatory h1 { font-size:54px; }.observatory-stats { grid-template-columns:repeat(3,minmax(0,1fr)); }.hero-description { max-width:440px; }.globe-message { min-height:360px; }.stat-value { flex-wrap:wrap;gap:0 10px; }.observatory::before { inset:-20px -16px; }.app-route-home .mission-status { display:none; } }
 @media(max-width:639px) { .observatory { display:flex;flex-direction:column;gap:24px;padding-top:0; }.observatory-hero { order:0; }.observatory h1 { font-size:48px; }.observatory-hero .eyebrow { font-size:9px;margin-bottom:12px; }.hero-description { font-size:14px;margin:16px 0; }.observatory-world { order:1;width:100%; }.observatory-stats { order:2;grid-template-columns:1fr;width:100%; }.observatory-controls { order:3;width:100%; }.observatory-controls summary { display:flex;justify-content:space-between;background:var(--card);padding:14px 18px;border:1px solid var(--grid);border-radius:16px;font-weight:600;font-size:14px;cursor:pointer; }.observatory-filter-body { padding-top:16px; }.observatory h1 br:first-of-type { display:none; }.observatory h1 span::before { content:' '; }.observation-card { padding:16px 18px; }.globe-message { min-height:300px; }.app-route-home .demo-launch { margin-bottom:16px; }.app-route-home .demo-launch>span { display:none; }.season-report-heading { margin-top:0; } }
 @media print { .observatory { display:none; } }
+.earth-scene { width:calc(100% + 190px);height:690px;margin-left:-95px;position:relative; }
+.earth-loading { position:absolute;top:45%;left:10%;right:10%;padding:10px;border-radius:20px;background:var(--card);font-size:13px; }
+.earth-realistic .earth-tools { margin-top:-30px; }
+.globe-note a { text-decoration:underline;text-underline-offset:2px; }
+@media(min-width:1440px) { .earth-scene { height:760px; } }
+@media(max-width:1100px) { .earth-scene { height:590px;width:calc(100% + 100px);margin-left:-50px; } }
+@media(max-width:1023px) { .earth-scene { height:420px;width:100%;margin-left:0; }.earth-realistic .earth-tools { margin-top:0; } }
+@media(max-width:639px) { .earth-scene { height:360px; }.globe-topline { margin-bottom:4px; } }
+.observatory { grid-template-rows:min-content 1fr; }
+.location-results small { display:block;color:var(--muted);font-size:10px; }
+@media(min-width:1440px) { .earth-scene { height:700px; } }
+@media(max-width:639px) { .observatory h1 br:first-of-type { display:initial; }.observatory h1 span::before { content:none; }.observatory h1 { font-size:48px; }.earth-scene { height:min(360px,calc(100vw - 32px)); } }

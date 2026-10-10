@@ -19,7 +19,7 @@ export default function EarthCanvas({land,areas,points,focus,onSelect,flat}:Prop
  const projection=useMemo(()=>flat ? geoMercator().center(center).scale(width*2.8*zoom).translate([width/2,height/2]).clipExtent([[0,0],[width,height]]) : geoOrthographic().rotate([-center[0],-center[1]]).scale(Math.min(width,height)*.44*zoom).translate([width/2,height/2]).clipAngle(90),[center,width,height,zoom,flat]);
  useEffect(()=>{
   const el=canvas.current;const ctx=el?.getContext('2d');if(!el||!ctx){setFailed(true);return}
-  const dpr=Math.min(devicePixelRatio||1,2);el.width=width*dpr;el.height=height*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,width,height);
+  const dpr=Math.min(devicePixelRatio||1,2);el.width=width*dpr;el.height=height*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,width,height);if(flat){ctx.fillStyle='#e5f0f5';ctx.fillRect(0,0,width,height);}
   const path=geoPath(projection,ctx);
   if(!flat){
    const r=Math.min(width,height)*.44*zoom;const gradient=ctx.createRadialGradient(width*.38,height*.25,0,width/2,height/2,r);
@@ -27,9 +27,9 @@ export default function EarthCanvas({land,areas,points,focus,onSelect,flat}:Prop
    ctx.beginPath();path({type:'Sphere'});ctx.fillStyle=gradient;ctx.fill();
    ctx.shadowColor='#6ed8f0';ctx.shadowBlur=14;ctx.strokeStyle='#4b8a9f';ctx.lineWidth=1;ctx.stroke();ctx.shadowBlur=0;
   }
-  ctx.beginPath();path(land);ctx.fillStyle='#203f4d';ctx.fill();ctx.strokeStyle='#548392';ctx.lineWidth=.6;ctx.stroke();
-  ctx.beginPath();path(geoGraticule10());ctx.strokeStyle='#6ed8f024';ctx.lineWidth=.6;ctx.stroke();
-  ctx.beginPath();path({type:'FeatureCollection',features:areas});ctx.strokeStyle='#6ed8f0';ctx.lineWidth=1.2;ctx.stroke();
+  ctx.beginPath();path(land);ctx.fillStyle=flat?'#ccdcd3':'#203f4d';ctx.fill();ctx.strokeStyle=flat?'#94afa6':'#548392';ctx.lineWidth=.6;ctx.stroke();
+  ctx.beginPath();path(geoGraticule10());ctx.strokeStyle=flat?'#879ea533':'#6ed8f024';ctx.lineWidth=.6;ctx.stroke();
+  ctx.beginPath();path({type:'FeatureCollection',features:areas});ctx.strokeStyle=flat?'#456e6f':'#6ed8f0';ctx.lineWidth=1.2;ctx.stroke();
   hit.current=[];const bins=new Map<string,{x:number;y:number;n:number;static:boolean}>();
   for(const p of points){
    if(!flat&&geoDistance([p.lon,p.lat],center)>Math.PI/2)continue;
@@ -39,12 +39,12 @@ export default function EarthCanvas({land,areas,points,focus,onSelect,flat}:Prop
    if(b)b.n++;else bins.set(key,{x,y,n:1,static:p.status===2});
   }
   for(const b of bins.values()){
-   ctx.beginPath();ctx.arc(b.x,b.y,Math.min(5,1.8+Math.log2(b.n)*.5),0,Math.PI*2);ctx.fillStyle=b.static?'#6ed8f0':'#ff9b54';ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=5;ctx.fill();
+   ctx.beginPath();ctx.arc(b.x,b.y,Math.min(5,1.8+Math.log2(b.n)*.5),0,Math.PI*2);ctx.fillStyle=b.static?'#357a99':'#e55924';ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=5;ctx.fill();
   }
   ctx.shadowBlur=0;
   const xy=projection(focus);if(xy&&(flat||geoDistance(focus,center)<Math.PI/2)){
-   ctx.beginPath();ctx.arc(xy[0],xy[1],10,0,Math.PI*2);ctx.strokeStyle='#6ed8f0';ctx.lineWidth=1;ctx.stroke();
-   ctx.fillStyle='#d3f6fc';ctx.font='10px Inter, sans-serif';ctx.fillText('BANGLADESH',Math.min(width-85,xy[0]+15),xy[1]-12);
+   ctx.beginPath();ctx.arc(xy[0],xy[1],10,0,Math.PI*2);ctx.strokeStyle=flat?'#456e6f':'#6ed8f0';ctx.lineWidth=1;ctx.stroke();
+   ctx.fillStyle=flat?'#10243a':'#d3f6fc';ctx.font='10px Inter, sans-serif';ctx.fillText('BANGLADESH',Math.min(width-85,xy[0]+15),xy[1]-12);
   }
  },[projection,width,height,land,areas,points,center,focus,zoom,flat]);
  const nearest=(x:number,y:number)=>{let best:Hotspot|null=null;let dist=10;for(const h of hit.current){const d=Math.hypot(h.x-x,h.y-y);if(d<dist){dist=d;best=h.p}}return best};
