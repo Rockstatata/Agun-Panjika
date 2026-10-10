@@ -36,8 +36,8 @@ All original screens remain available. Scientific calculations and exported data
 ## Git History
 - Branch: `feat/charts-calendar-polish`.
 - Implementation source commits (chronological):
-  - `39aa0389a3e7c08b1a3edffe6d7c92cec8462327` ? feat(charts-calendar-polish): add precise calendar selection and accessible scientific chart exploration
-  - `6faeaa0be25bed28f9ac39eca16238792fb1838b` ? fix(charts): label mixed sources and support keyboard table scrolling
+  - `39aa0389a3e7c08b1a3edffe6d7c92cec8462327` - feat(charts-calendar-polish): add precise calendar selection and accessible scientific chart exploration
+  - `6faeaa0be25bed28f9ac39eca16238792fb1838b` - fix(charts): label mixed sources and support keyboard table scrolling
 
 - Implementation commits pushed successfully; final documentation push recorded in preview Git manifest.
 - Integrated by cherry-pick only into preview/agun-v2; conflicts resolved there. main remains unchanged.

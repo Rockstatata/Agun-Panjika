@@ -40,7 +40,7 @@ All original screens remain available. Scientific calculations and exported data
 ## Git History
 - Branch: `feat/3d-geospatial-experience`.
 - Implementation source commits (chronological):
-  - `0e331961bd7b871a96359d1c14dd8dd9e1903ac7` ? feat(3d-geospatial-experience): add a lazy geographic sphere with real FIRMS points and 2D fallback
+  - `0e331961bd7b871a96359d1c14dd8dd9e1903ac7` - feat(3d-geospatial-experience): add a lazy geographic sphere with real FIRMS points and 2D fallback
 
 - Implementation commits pushed successfully; final documentation push recorded in preview Git manifest.
 - Integrated by cherry-pick only into preview/agun-v2; conflicts resolved there. main remains unchanged.

@@ -35,8 +35,8 @@ All original screens remain available. Scientific calculations and exported data
 ## Git History
 - Branch: `feat/ui-design-system`.
 - Implementation source commits (chronological):
-  - `dde89c7ae329025a6d4485217b0b53c35a458b90` ? feat(ui-design-system): introduce premium scientific design tokens and visual hierarchy
-  - `58c856079c352451d0c4b90ca5cf1e900f333d33` ? fix(ui): strengthen dark sensor comparison contrast
+  - `dde89c7ae329025a6d4485217b0b53c35a458b90` - feat(ui-design-system): introduce premium scientific design tokens and visual hierarchy
+  - `58c856079c352451d0c4b90ca5cf1e900f333d33` - fix(ui): strengthen dark sensor comparison contrast
 
 - Implementation commits pushed successfully; final documentation push recorded in preview Git manifest.
 - Integrated by cherry-pick only into preview/agun-v2; conflicts resolved there. main remains unchanged.

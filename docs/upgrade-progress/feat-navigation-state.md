@@ -38,8 +38,8 @@ All original screens remain available. Scientific calculations and exported data
 ## Git History
 - Branch: `feat/navigation-state`.
 - Implementation source commits (chronological):
-  - `7d231b032889493141421e559588eb5c2d9bae00` ? feat(navigation-state): preserve shareable filters and simplify desktop and mobile navigation
-  - `b86f52b16b7c6567c8d1b0d90d04fa9efe1ec121` ? fix(navigation): preserve UTF-8 identity and await lazy section destinations
+  - `7d231b032889493141421e559588eb5c2d9bae00` - feat(navigation-state): preserve shareable filters and simplify desktop and mobile navigation
+  - `b86f52b16b7c6567c8d1b0d90d04fa9efe1ec121` - fix(navigation): preserve UTF-8 identity and await lazy section destinations
 
 - Implementation commits pushed successfully; final documentation push recorded in preview Git manifest.
 - Integrated by cherry-pick only into preview/agun-v2; conflicts resolved there. main remains unchanged.

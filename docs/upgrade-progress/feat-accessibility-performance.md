@@ -41,7 +41,7 @@ All original screens remain available. Scientific calculations and exported data
 ## Git History
 - Branch: `feat/accessibility-performance`.
 - Implementation source commits (chronological):
-  - `10cdacd5fcb5f47f6c02da55dee7075346aecb73` ? feat(accessibility-performance): split route bundles and improve keyboard, touch, contrast and print accessibility
+  - `10cdacd5fcb5f47f6c02da55dee7075346aecb73` - feat(accessibility-performance): split route bundles and improve keyboard, touch, contrast and print accessibility
 
 - Implementation commits pushed successfully; final documentation push recorded in preview Git manifest.
 - Integrated by cherry-pick only into preview/agun-v2; conflicts resolved there. main remains unchanged.

@@ -33,7 +33,7 @@ All original screens remain available. Scientific calculations and exported data
 ## Git History
 - Branch: `feat/map-exploration`.
 - Implementation source commits (chronological):
-  - `8c577919745df3e0e3565e2e72fe2036875ea69c` ? feat(map-exploration): add regional hotspot clusters, scientific layers and graceful map recovery
+  - `8c577919745df3e0e3565e2e72fe2036875ea69c` - feat(map-exploration): add regional hotspot clusters, scientific layers and graceful map recovery
 
 - Implementation commits pushed successfully; final documentation push recorded in preview Git manifest.
 - Integrated by cherry-pick only into preview/agun-v2; conflicts resolved there. main remains unchanged.

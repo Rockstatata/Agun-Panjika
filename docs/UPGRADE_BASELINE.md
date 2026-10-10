@@ -50,3 +50,7 @@ Scientific contract is defined in lib/types.ts, pipeline/export.py and pipeline/
 ## Branch policy
 
 All eight features use independent worktrees from verified origin/main. Tested commits are cherry-picked in the brief's phase order into preview/agun-v2. No main writes, merges, resets, rebases, branch deletion or force pushes. No production workflow changes or production publication.
+
+## Final audit clarification
+
+The corrected isolated Python baseline is 50 passed, 9 skipped. Final strict console auditing also identified pre-existing duplicate citation keys and cross-origin font CSS access errors during PNG sharing; both were fixed on the reliability feature branch. npm audit reports 11 vulnerabilities (3 moderate, 7 high, 1 critical), with affected installed versions identical to the baseline. These are recorded as release limitations rather than silently upgrading the rendering/toolchain stack.

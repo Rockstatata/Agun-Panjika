@@ -35,7 +35,7 @@ All original screens remain available. Scientific calculations and exported data
 ## Git History
 - Branch: `feat/demo-storytelling`.
 - Implementation source commits (chronological):
-  - `fd3023a9d17fdaa73383ec45a0a53b629c62bfcf` ? feat(demo-storytelling): add a bilingual seven-step guided demo that restores user filters
+  - `fd3023a9d17fdaa73383ec45a0a53b629c62bfcf` - feat(demo-storytelling): add a bilingual seven-step guided demo that restores user filters
 
 - Implementation commits pushed successfully; final documentation push recorded in preview Git manifest.
 - Integrated by cherry-pick only into preview/agun-v2; conflicts resolved there. main remains unchanged.

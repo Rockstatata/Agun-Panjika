@@ -27,3 +27,6 @@ data/*/
 # Local editor / agent config
 .claude/
 *.tsbuildinfo
+
+# Local browser QA artifacts
+web/test-results/
