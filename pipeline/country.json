@@ -1,0 +1,14 @@
+{
+  "iso3": "BGD",
+  "firms_name": "Bangladesh",
+  "name_en": "Bangladesh",
+  "name_bn": "বাংলাদেশ",
+  "bbox": [88.0, 20.5, 92.7, 26.7],
+  "regions": [
+    {"id": "rangamati", "name_en": "Rangamati", "name_bn": "রাঙামাটি", "districts": ["Rangamati"]},
+    {"id": "khagrachhari", "name_en": "Khagrachhari", "name_bn": "খাগড়াছড়ি", "districts": ["Khagrachhari"]},
+    {"id": "bandarban", "name_en": "Bandarban", "name_bn": "বান্দরবান", "districts": ["Bandarban"]},
+    {"id": "ctg_coxs_hills", "name_en": "Chattogram & Cox's Bazar", "name_bn": "চট্টগ্রাম ও কক্সবাজার", "districts": ["Chittagong", "Cox's Bazar"]},
+    {"id": "rest", "name_en": "Rest of Bangladesh", "name_bn": "বাংলাদেশের বাকি অংশ", "districts": []}
+  ]
+}

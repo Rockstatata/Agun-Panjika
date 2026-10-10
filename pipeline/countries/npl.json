@@ -1,0 +1,11 @@
+{
+  "iso3": "NPL",
+  "firms_name": "Nepal",
+  "name_en": "Nepal",
+  "name_bn": "नेपाल",
+  "bbox": [80.0, 26.3, 88.3, 30.5],
+  "regions": [
+    {"id": "chitwan_parsa", "name_en": "Chitwan & Parsa", "name_bn": "चितवन र पर्सा", "districts": ["Chitawan", "Parsa"]},
+    {"id": "rest", "name_en": "Rest of Nepal", "name_bn": "बाँकी नेपाल", "districts": []}
+  ]
+}
