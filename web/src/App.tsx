@@ -62,7 +62,7 @@ export default function App() {
   }, [route]);
 
   return (
-    <div className="min-h-screen pb-20 lg:pb-8">
+    <div className={`min-h-screen pb-20 lg:pb-8 app-route-${route}`}>
       <a href="#main" onClick={(e) => { e.preventDefault(); document.getElementById("main")?.focus(); }} className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-[var(--card)] focus:p-2">
         {t("app.skip")}
       </a>

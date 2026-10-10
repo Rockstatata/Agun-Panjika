@@ -38,3 +38,6 @@ Dependency audit retains 11 pre-existing advisories (3 moderate, 7 high,
 1. Light visual system, responsive composition and existing-data controls.
 2. Textured Earth, interaction, graceful fallback and licensed local assets.
 3. Browser/reference comparison, scientific regression, final branch push.
+
+## Layout milestone
+Shared light surfaces, serif hero, three real-data cards, district search, linked period/source controls and responsive filters implemented. Seasonal report and all navigation remain accessible. Typecheck, production build and Python checks passed. Seven route screenshots passed axe, overflow and console checks (soft-earth-layout). The interim renderer is replaced in the next milestone.

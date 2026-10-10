@@ -5,7 +5,6 @@ import { LevelBadge, LevelIcon } from "../components/LevelBadge";
 import { RegionPicker } from "../components/RegionPicker";
 import { SeasonChart } from "../components/SeasonChart";
 import { ShareButton } from "../components/ShareButton";
-import { SectionHeader } from "../components/SectionHeader";
 import { GlobePanel } from "../components/GlobePanel";
 import { useFmt } from "../i18n";
 import { AlertList, OutlookCard } from "../components/Outlook";
@@ -22,25 +21,14 @@ interface Props {
 }
 
 export function Home({ manifest, params, setParams, go }: Props) {
-  const { t, lang, num, year: fy } = useFmt();
+  const { t, lang } = useFmt();
   const regionId = params.get("r") ?? "bgd";
   const { data: doc, error,loading,retry } = useAsync(() => loadRegion(regionId), [regionId]);
   if (error) return <RequestStatus error={error} retry={retry}/>;
   return (
     <div className="flex flex-col gap-4">
-      <div className="home-geospatial">
-      <section className="mission-hero no-print">
-        <SectionHeader eyebrow={lang === "bn" ? "বাংলাদেশের অগ্নি পর্যবেক্ষণ" : "BANGLADESH FIRE OBSERVATORY"} title={t("home.question")}>
-          <p>{lang === "bn" ? "দুটি উপগ্রহ। একটি নিরবচ্ছিন্ন রেকর্ড। আগুনের মৌসুম বুঝুন, তথ্য দিয়ে।" : "Two satellite instruments. One continuous record. Understand the fire season through the evidence."}</p>
-        </SectionHeader>
-        <div className="mission-facts">
-          <div><strong>{fy(manifest.years[0])}–{fy(manifest.years[manifest.years.length - 1])}</strong><span>{lang === "bn" ? "সমন্বিত অগ্নি রেকর্ড" : "Harmonized fire record"}</span></div>
-          <div><strong>{num(manifest.districts.length)}</strong><span>{lang === "bn" ? "জেলা পর্যবেক্ষণে" : "Districts in view"}</span></div>
-          <div><strong>MODIS + VIIRS</strong><span>NASA FIRMS · {manifest.model_version}</span></div>
-        </div>
-      </section>
-      <GlobePanel manifest={manifest} params={params} setParams={setParams} />
-      </div>
+      <GlobePanel manifest={manifest} params={params} setParams={setParams} go={go} />
+      <div className="season-report-heading no-print"><h2>{lang === "bn" ? t("report.title") : "Your seasonal report"}</h2><p>{lang === "bn" ? t("app.tagline") : "The full record, with context. Explore the season, uncertainty and historical comparisons below."}</p></div>
       {doc ? (
         <SeasonView manifest={manifest} doc={doc} params={params} setParams={setParams} go={go} />
       ) : (
