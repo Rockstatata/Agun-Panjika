@@ -59,7 +59,8 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
   const [showPoints,setShowPoints]=useState(true);
   const [mapError,setMapError]=useState<string|null>(null);
   const [mapAttempt,setMapAttempt]=useState(0);
-  const [hideKilns, setHideKilns] = useState(true);
+  const hideKilns = params.get("kilns") !== "1";
+  const setHideKilns = (fn: (v: boolean) => boolean) => setParams({ kilns: fn(hideKilns) ? "0" : "1" });
   const [table, setTable] = useState(false);
   const mapDiv = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap | null>(null);
