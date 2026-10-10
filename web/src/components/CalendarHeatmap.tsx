@@ -72,7 +72,7 @@ export function CalendarHeatmap({ doc, years, highlightYear, onSelectYear, onSel
   };
 
   return (
-    <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: "touch" }}>
+    <div tabIndex={0} className="overflow-x-auto" style={{ WebkitOverflowScrolling: "touch" }}>
       <svg
         ref={svgRef}
         width={width}
@@ -233,7 +233,7 @@ export function CalendarTable({ doc }: { doc: RegionDoc }) {
   const months = t("calendar.months").split(",");
   const rows = [...byYear(doc).entries()].sort((a, b) => a[0] - b[0]);
   return (
-    <div className="overflow-x-auto">
+    <div tabIndex={0} className="overflow-x-auto">
       <table className="data-table">
         <caption className="sr-only">{t("calendar.title")}</caption>
         <thead>

@@ -3,19 +3,21 @@ import i18n, { useFmt } from "./i18n";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ConnectionStatus, RequestStatus } from "./components/RequestStatus";
 import { loadManifest, useAsync } from "./lib/data";
-import { useRoute } from "./lib/router";
-import { Home } from "./screens/Home";
-import { Borders } from "./screens/Borders";
-import { Method } from "./screens/Method";
-import { OutlookScreen } from "./screens/OutlookScreen";
-import { Panjika } from "./screens/Panjika";
-import { Sensors } from "./screens/Sensors";
 import { Navigation, MoreNavigation } from "./components/Navigation";
+import { useRoute } from "./lib/router";
+const Home=lazy(()=>import('./screens/Home').then(m=>({default:m.Home})));
+const Borders=lazy(()=>import('./screens/Borders').then(m=>({default:m.Borders})));
+const Method=lazy(()=>import('./screens/Method').then(m=>({default:m.Method})));
+const OutlookScreen=lazy(()=>import('./screens/OutlookScreen').then(m=>({default:m.OutlookScreen})));
+const Panjika=lazy(()=>import('./screens/Panjika').then(m=>({default:m.Panjika})));
+const Sensors=lazy(()=>import('./screens/Sensors').then(m=>({default:m.Sensors})));
 
 const MapScreen = lazy(() => import("./screens/MapScreen"));
 
 function useTheme() {
   const [theme, setTheme] = useState<string | null>(() => document.documentElement.getAttribute("data-theme"));
+  const [systemDark,setSystemDark]=useState(()=>window.matchMedia('(prefers-color-scheme: dark)').matches);
+  useEffect(()=>{const mq=window.matchMedia('(prefers-color-scheme: dark)');const update=()=>setSystemDark(mq.matches);mq.addEventListener('change',update);return()=>mq.removeEventListener('change',update)},[]);
   useEffect(() => {
     if (theme) document.documentElement.setAttribute("data-theme", theme);
     try {
@@ -24,7 +26,7 @@ function useTheme() {
       /* ignore */
     }
   }, [theme]);
-  const dark = theme ? theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const dark = theme ? theme === "dark" : systemDark;
   return { dark, toggle: () => setTheme(dark ? "light" : "dark") };
 }
 
@@ -94,6 +96,7 @@ export default function App() {
         <RequestStatus error={error} loading={loading} retry={retry}/>
         {manifest && (
           <ErrorBoundary key={`${route}-${screenAttempt}`} fallback={(e) => <RequestStatus error={e} retry={()=>setScreenAttempt(n=>n+1)}/> }>
+            <Suspense fallback={<p className="text-muted" role="status">{t('app.loading')}</p>}>
             {route === "home" && <Home manifest={manifest} params={params} setParams={setParams} go={go} />}
             {route === "outlook" && <OutlookScreen manifest={manifest} params={params} setParams={setParams} />}
             {route === "borders" && <Borders />}
@@ -105,6 +108,7 @@ export default function App() {
               </Suspense>
             )}
             {route === "method" && <Method manifest={manifest} />}
+            </Suspense>
             <footer className="no-print mt-10 border-t border-grid pt-4 text-xs text-muted">
               <p className="italic">{t("app.tagline")}</p>
               <p className="mt-1">

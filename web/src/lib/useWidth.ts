@@ -6,7 +6,7 @@ export function useWidth<T extends HTMLElement>(fallback = 600) {
   const [w, setW] = useState(fallback);
   useEffect(() => {
     if (!ref.current) return;
-    const ro = new ResizeObserver((e) => setW(Math.max(240, Math.floor(e[0].contentRect.width))));
+    const ro = new ResizeObserver((e) => setW(Math.max(160, Math.floor(e[0].contentRect.width))));
     ro.observe(ref.current);
     return () => ro.disconnect();
   }, []);
