@@ -3,6 +3,7 @@ import i18n, { useFmt } from "./i18n";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ConnectionStatus, RequestStatus } from "./components/RequestStatus";
 import { loadManifest, useAsync } from "./lib/data";
+import { DemoTour } from "./components/DemoTour";
 import { Navigation, MoreNavigation } from "./components/Navigation";
 import { useRoute } from "./lib/router";
 const Home=lazy(()=>import('./screens/Home').then(m=>({default:m.Home})));
@@ -94,6 +95,7 @@ export default function App() {
       <main id="main" tabIndex={-1} className="app-main mx-auto px-4 py-5">
         {!online&&<ConnectionStatus/>}
         <RequestStatus error={error} loading={loading} retry={retry}/>
+        {manifest&&<DemoTour go={go} route={route}/>}
         {manifest && (
           <ErrorBoundary key={`${route}-${screenAttempt}`} fallback={(e) => <RequestStatus error={e} retry={()=>setScreenAttempt(n=>n+1)}/> }>
             <Suspense fallback={<p className="text-muted" role="status">{t('app.loading')}</p>}>
