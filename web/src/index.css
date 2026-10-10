@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.sensor-story { display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--grid);border-bottom:1px solid var(--grid);width:100%; }
+.chart-provenance { display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin-top:8px; }
+.calendar-selection { background:var(--zero);border-left:3px solid var(--accent); }
+[role="gridcell"] { cursor:pointer;transition:opacity 120ms ease; }
+[role="gridcell"]:hover { stroke:var(--ink);stroke-width:2; }
+
 /* Almanac, not a dashboard: warm paper, ink text, ember only for fire. */
 :root {
   --paper: #faf7f2;

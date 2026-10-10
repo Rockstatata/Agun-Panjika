@@ -1,5 +1,6 @@
 import { scaleLinear } from "d3-scale";
 import { area, line } from "d3-shape";
+import { useState } from "react";
 import { useFmt } from "../i18n";
 import type { AnnualRow, SeriesKey } from "../lib/series";
 import { useWidth } from "../lib/useWidth";
@@ -23,7 +24,8 @@ interface Props {
 
 /** Annual totals for the selected series; the harmonised series carries its 80% band. */
 export function AnnualChart({ rows, series, labels, from, to, marker }: Props) {
-  const { num, year: fy } = useFmt();
+  const { num, year: fy, lang } = useFmt();
+  const [activeYear,setActiveYear] = useState<number | null>(null);
   const tip = useTooltip();
   const [ref, width] = useWidth<HTMLDivElement>();
   const height = width < 500 ? 240 : 300;
@@ -52,6 +54,15 @@ export function AnnualChart({ rows, series, labels, from, to, marker }: Props) {
         width={width}
         height={height}
         role="img"
+        tabIndex={0}
+        onKeyDown={e=>{
+          if(e.key==='Escape'){tip.hide();setActiveYear(null);return}
+          if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+          e.preventDefault();const i=Math.max(0,data.findIndex(d=>d.y===(activeYear??from)));const row=data[Math.max(0,Math.min(data.length-1,i+(e.key==='ArrowRight'?1:-1)))];
+          if(!row)return;setActiveYear(row.y);const r=e.currentTarget.getBoundingClientRect();
+          tip.show(r.left+x(row.y),r.top+m.t,<div><strong>{fy(row.y)}</strong>{series.map(k=><div key={k}>{labels[k]}: {row[k]===undefined?'—':num(row[k] as number)}{k==='harm'&&row.src!=='observed'?` (${num(row.lo)}–${num(row.hi)})`:''}</div>)}</div>);
+        }}
+        onBlur={()=>{tip.hide();setActiveYear(null)}}
         aria-label={series.map((k) => labels[k]).join(", ")}
         onMouseLeave={() => tip.hide()}
         onMouseMove={(e) => {
@@ -59,6 +70,7 @@ export function AnnualChart({ rows, series, labels, from, to, marker }: Props) {
           const yr = Math.round(x.invert(e.clientX - r.left));
           const row = data.find((d) => d.y === yr);
           if (!row) return;
+          setActiveYear(row.y);
           tip.show(
             e.clientX,
             e.clientY,
@@ -106,6 +118,7 @@ export function AnnualChart({ rows, series, labels, from, to, marker }: Props) {
           </g>
         )}
         {series.includes("harm") && <path d={band} fill="var(--band)" />}
+        {activeYear!==null && <line x1={x(activeYear)} x2={x(activeYear)} y1={m.t} y2={height-m.b} stroke="var(--muted)" strokeDasharray="3 4" pointerEvents="none"/>}
         {series.map((k) => (
           <path key={k} d={path(k)} fill="none" stroke={SERIES_STYLE[k].color} strokeWidth={SERIES_STYLE[k].width} strokeDasharray={SERIES_STYLE[k].dash} />
         ))}
@@ -117,6 +130,8 @@ export function AnnualChart({ rows, series, labels, from, to, marker }: Props) {
           ),
         )}
       </svg>
+      <div className="chart-provenance"><span>≈ {lang==='bn'?'অনুমান ও ৮০% অনিশ্চয়তা':'Estimates and 80% uncertainty'}</span><span>{lang==='bn'?'তীরচিহ্নে বছর দেখুন':'Use arrow keys to inspect years'}</span></div>
+      <details className="mt-3"><summary className="text-sm text-muted cursor-pointer">{lang==='bn'?'বার্ষিক তথ্য সারণি':'Annual data table'}</summary><div className="overflow-x-auto"><table className="data-table"><thead><tr><th scope="col">{lang==='bn'?'বছর':'Year'}</th>{series.map(k=><th scope="col" key={k}>{labels[k]}</th>)}<th scope="col">{lang==='bn'?'উৎস':'Source'}</th></tr></thead><tbody>{data.map(r=><tr key={r.y}><th scope="row">{fy(r.y)}</th>{series.map(k=><td key={k}>{r[k]===undefined?'—':num(r[k] as number)}</td>)}<td>{r.src==='observed'?(lang==='bn'?'পর্যবেক্ষিত':'Observed'):(lang==='bn'?'অনুমান/সমন্বিত':'Estimated/bridged')}</td></tr>)}</tbody></table></div></details>
     </div>
   );
 }
