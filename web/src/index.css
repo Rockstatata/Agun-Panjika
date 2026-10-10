@@ -53,7 +53,7 @@
     --ramp-5: #ffd3a1;
     --modis: #a3b4cd;
     --viirs: #6ed8f0;
-    --naive: #566477;
+    --naive: #b79cca;
     --band: rgba(240, 138, 62, 0.2);
     --level-below: #8fb3c2;
     --level-normal: #aab8cb;
@@ -79,7 +79,7 @@
   --ramp-5: #ffd3a1;
   --modis: #a3b4cd;
   --viirs: #6ed8f0;
-  --naive: #566477;
+  --naive: #b79cca;
   --band: rgba(240, 138, 62, 0.2);
   --level-below: #8fb3c2;
   --level-normal: #aab8cb;
