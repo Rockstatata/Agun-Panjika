@@ -168,7 +168,7 @@ export function Method({ manifest }: { manifest: Manifest }) {
         <h2 className="text-lg font-semibold">{t("method.sources")}</h2>
         <ul className="mt-2 flex list-disc flex-col gap-1 pl-5 text-sm">
           {SOURCES.map(([label, href]) => (
-            <li key={href}>
+            <li key={label}>
               <a href={href} target="_blank" rel="noreferrer" className="underline decoration-[var(--grid)] underline-offset-2">
                 {label}
               </a>
