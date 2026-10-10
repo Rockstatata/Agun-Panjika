@@ -131,7 +131,7 @@ export function AnnualChart({ rows, series, labels, from, to, marker }: Props) {
         )}
       </svg>
       <div className="chart-provenance"><span>≈ {lang==='bn'?'অনুমান ও ৮০% অনিশ্চয়তা':'Estimates and 80% uncertainty'}</span><span>{lang==='bn'?'তীরচিহ্নে বছর দেখুন':'Use arrow keys to inspect years'}</span></div>
-      <details className="mt-3"><summary className="text-sm text-muted cursor-pointer">{lang==='bn'?'বার্ষিক তথ্য সারণি':'Annual data table'}</summary><div className="overflow-x-auto"><table className="data-table"><thead><tr><th scope="col">{lang==='bn'?'বছর':'Year'}</th>{series.map(k=><th scope="col" key={k}>{labels[k]}</th>)}<th scope="col">{lang==='bn'?'উৎস':'Source'}</th></tr></thead><tbody>{data.map(r=><tr key={r.y}><th scope="row">{fy(r.y)}</th>{series.map(k=><td key={k}>{r[k]===undefined?'—':num(r[k] as number)}</td>)}<td>{r.src==='observed'?(lang==='bn'?'পর্যবেক্ষিত':'Observed'):(lang==='bn'?'অনুমান/সমন্বিত':'Estimated/bridged')}</td></tr>)}</tbody></table></div></details>
+      <details className="mt-3"><summary className="text-sm text-muted cursor-pointer">{lang==='bn'?'বার্ষিক তথ্য সারণি':'Annual data table'}</summary><div tabIndex={0} className="overflow-x-auto"><table className="data-table"><thead><tr><th scope="col">{lang==='bn'?'বছর':'Year'}</th>{series.map(k=><th scope="col" key={k}>{labels[k]}</th>)}<th scope="col">{lang==='bn'?'উৎস':'Source'}</th></tr></thead><tbody>{data.map(r=><tr key={r.y}><th scope="row">{fy(r.y)}</th>{series.map(k=><td key={k}>{r[k]===undefined?'—':num(r[k] as number)}</td>)}<td>{r.src==='observed'?(lang==='bn'?'পর্যবেক্ষিত':'Observed'):(lang==='bn'?'অনুমান/সমন্বিত':'Estimated/bridged')}</td></tr>)}</tbody></table></div></details>
     </div>
   );
 }
