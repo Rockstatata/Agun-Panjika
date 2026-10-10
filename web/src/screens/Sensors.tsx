@@ -18,7 +18,7 @@ export function Sensors({ manifest, params, setParams }: { manifest: Manifest; p
   const { data: doc } = useAsync(() => loadRegion(regionId), [regionId]);
   const { data: val } = useAsync(loadValidation, []);
   const on = (params.get("s") ?? "modis,viirs").split(",").filter((k): k is SeriesKey => ALL.includes(k as SeriesKey));
-  const setOn = (fn: (cur: SeriesKey[]) => SeriesKey[]) => setParams({ s: fn(on).join(",") });
+  const setOn = (next: SeriesKey[] | ((cur: SeriesKey[]) => SeriesKey[])) => setParams({ s: (typeof next === "function" ? next(on) : next).join(",") });
   const withKilns = params.get("kilns") === "1";
   const setWithKilns = (v: boolean) => setParams({ kilns: v ? "1" : "0" });
   const rows = useMemo(() => {
