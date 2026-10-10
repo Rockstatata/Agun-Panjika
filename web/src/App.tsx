@@ -54,8 +54,8 @@ export default function App() {
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-[var(--card)] focus:p-2">
         {t("app.skip")}
       </a>
-      <header className="no-print sticky top-0 z-30 border-b border-grid bg-[var(--paper)]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
+      <header className="app-header no-print sticky top-0 z-30 border-b border-grid backdrop-blur">
+        <div className="app-header-inner mx-auto flex items-center justify-between gap-3 px-4 py-3">
           <button type="button" onClick={() => go("home", carry)} className="flex items-center gap-2 text-left">
             <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
               <path d="M16 2c2 6 9 9 9 17a9 9 0 0 1-18 0c0-5 3-7 4-11 1 3 2 4 3 5 1-4 2-7 2-11z" fill="var(--accent)" />
@@ -98,7 +98,8 @@ export default function App() {
         </div>
       </header>
 
-      <main id="main" className="mx-auto max-w-5xl px-4 py-5">
+      <div className="mission-status no-print"><span>NASA SPACE APPS 2026 <span aria-hidden="true">/</span> KUETaguns</span><span>{lang === "bn" ? "উৎস: NASA FIRMS" : "SOURCE: NASA FIRMS"} · {manifest?.updated_utc.slice(0, 10) ?? "…"}</span></div>
+      <main id="main" className="app-main mx-auto px-4 py-5">
         {error && <p role="alert">{t("app.error", { msg: error.message })}</p>}
         {!manifest && !error && <p className="text-muted">{t("app.loading")}</p>}
         {manifest && (
