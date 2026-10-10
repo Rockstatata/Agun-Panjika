@@ -9,7 +9,7 @@
 **NASA Space Apps Challenge 2026** · **Team KUETaguns**
 KUET, Khulna, Bangladesh · *Harmonization of MODIS and VIIRS Hot Spots*
 
-![NASA FIRMS](https://img.shields.io/badge/NASA-FIRMS-0B3D91?style=flat-square) ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square) ![React](https://img.shields.io/badge/React-TypeScript-16829C?style=flat-square) ![Languages](https://img.shields.io/badge/English-%E0%A6%AC%E0%A6%BE%E0%A6%82%E0%A6%B2%E0%A6%BE-C84B1A?style=flat-square)
+![NASA FIRMS](https://img.shields.io/badge/NASA-FIRMS-0B3D91?style=flat-square) ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square) ![React](https://img.shields.io/badge/React-TypeScript-16829C?style=flat-square) ![Languages](https://img.shields.io/badge/UI-English%20%7C%20Bangla-C84B1A?style=flat-square)
 
 [Overview](#project-overview) · [Preview](#application-preview) · [Science](#scientific-methodology) · [Run locally](#getting-started) · [Research](#data-sources-and-research)
 
@@ -17,7 +17,7 @@ KUET, Khulna, Bangladesh · *Harmonization of MODIS and VIIRS Hot Spots*
 
 </div>
 
-> **Review status · 10 October 2026:** `main` contains the scientific pipeline and original seven-screen application. The eight UI upgrades and Soft Earth redesign are pushed for review and remain unmerged. These screenshots do not imply a production deployment. [Review branches](https://github.com/Rockstatata/Agun-Panjika/branches) · [Pull requests](https://github.com/Rockstatata/Agun-Panjika/pulls).
+> **Branch availability:** The scientific pipeline and premium design-system upgrade are implemented on `main`. This README showcases the latest working `feat/soft-earth-globe-home` interface. Its gallery remains a branch preview until Soft Earth is integrated; application upgrades are being reviewed separately. [README history](https://github.com/Rockstatata/Agun-Panjika/pull/1) · [Current merge status](https://github.com/Rockstatata/Agun-Panjika/pulls?q=is%3Apr).
 
 ## Project overview
 
@@ -31,34 +31,30 @@ Continuity matters as instruments retire. NASA currently schedules the end of Su
 
 The **Soft Earth** homepage pairs a large textured, interactive Earth with soft blue and cream surfaces, white controls, coral accents and compact geospatial cards. Drag, zoom, focus on an area or select a real detection to explore its district. Region, year, week and static-source controls remain linked to the existing scientific views.
 
-<details>
-<summary><b>Mobile Soft Earth preview · 390 × 1100</b></summary>
+### Overview on mobile
 
-<p align="center"><img src="docs/readme-assets/soft-earth-mobile.png" alt="Actual mobile Soft Earth preview with responsive hero, globe controls and bottom navigation" width="330"/></p>
+<p align="center"><img src="docs/readme-assets/soft-earth-mobile.png" alt="Current Soft Earth mobile preview: responsive hero, interactive Earth, zoom controls and bottom navigation" width="330"/></p>
 
-</details>
+### Explore, compare and understand the season
 
-Both Soft Earth images are genuine production-build captures, copied unchanged from the feature branch into this documentation branch. The Earth and clouds are **static geographic context**, credited to [Solar System Scope](https://www.solarsystemscope.com/textures/) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); they are not current satellite imagery or weather. Points show archived weekly FIRMS coordinates, not harmonized totals, global live fires or fire intensity.
-
-<details>
-<summary><b>Scientific screens already implemented on main</b></summary>
-
-These archived captures show the original Calendar, Sensors, Outlook and Map interfaces. Their visual upgrades remain pending; the underlying scientific workflows already exist.
+The gallery below uses actual captures from the same **Soft Earth production preview** as the hero. It shows the updated blue/cream surfaces, white cards, coral controls and responsive navigation across the scientific screens.
 
 <table>
 <tr>
-<td width="50%"><img src="docs/screenshots/calendar_desktop.png" alt="Original fire calendar: comparable weekly seasons and estimated-year markers" width="100%"/><br/><sub><b>Calendar</b> · Weekly fire history on one scale.</sub></td>
-<td width="50%"><img src="docs/screenshots/sensors_desktop.png" alt="Original sensor comparison: raw, naive and harmonized records with validation" width="100%"/><br/><sub><b>Sensors</b> · Compare the instruments and the correction.</sub></td>
+<td width="50%"><a href="docs/readme-assets/soft-earth-calendar.png"><img src="docs/readme-assets/soft-earth-calendar.png" alt="Current Soft Earth fire calendar with season selection, weekly heatmap and observation details" width="100%"/></a><br/><b>Fire calendar</b><br/><sub>Compare seasons, select a week and distinguish observed from estimated activity.</sub></td>
+<td width="50%"><a href="docs/readme-assets/soft-earth-explore.png"><img src="docs/readme-assets/soft-earth-explore.png" alt="Current Soft Earth Explore view with geographic filters, real hotspot clusters and district layers" width="100%"/></a><br/><b>Explore</b><br/><sub>Inspect real weekly FIRMS points, district status and static-source filtering.</sub></td>
 </tr>
 <tr>
-<td><img src="docs/screenshots/outlook_desktop.png" alt="Original outlook: two-week probabilities, weather danger and alerts" width="100%"/><br/><sub><b>Outlook</b> · Probabilities, weather danger and uncertainty.</sub></td>
-<td><img src="docs/screenshots/map_desktop.png" alt="Original MapLibre map: district status and real weekly fire coordinates" width="100%"/><br/><sub><b>Map</b> · District patterns and weekly detections.</sub></td>
+<td><a href="docs/readme-assets/soft-earth-compare.png"><img src="docs/readme-assets/soft-earth-compare.png" alt="Current Soft Earth Compare view with raw MODIS and VIIRS series, harmonization controls and validation" width="100%"/></a><br/><b>Compare</b><br/><sub>Follow the sensor difference, harmonized record and held-out validation.</sub></td>
+<td><a href="docs/readme-assets/soft-earth-outlook.png"><img src="docs/readme-assets/soft-earth-outlook.png" alt="Current Soft Earth Outlook view with two-week probabilities, weather danger, district alerts and hindcast skill" width="100%"/></a><br/><b>Outlook</b><br/><sub>Read two-week probabilities, weather danger and forecast uncertainty.</sub></td>
 </tr>
 </table>
 
-</details>
+Click any gallery image to inspect it at full resolution. All six screenshots are **working software captures**, not generated concepts. The desktop and mobile hero files are copied unchanged from `feat/soft-earth-globe-home`; the four scientific-screen captures come from its documented production regression run.
 
-No working public deployment was verified during this audit. [Getting started](#getting-started) includes local preview instructions for main, the combined upgrades and Soft Earth.
+The Earth and clouds are **static geographic context**, credited to [Solar System Scope](https://www.solarsystemscope.com/textures/) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); they are not current satellite imagery or weather. Points show archived weekly FIRMS coordinates, not harmonized totals, global live fires or fire intensity.
+
+[Getting started](#getting-started) includes local preview instructions for main, the combined upgrades and Soft Earth. The availability table below distinguishes implemented scientific features from UI changes still pending integration.
 
 ## Core features
 
@@ -155,7 +151,7 @@ flowchart LR
     T -.-> U
 ```
 
-The [daily workflow](.github/workflows/daily.yml) runs the pipeline, Python tests and frontend build, then deploys through GitHub Pages on `main`. Check [Actions](https://github.com/Rockstatata/Agun-Panjika/actions) and the dataset timestamp to verify refresh success. During this audit, the latest main run failed in the pipeline step; deployment was skipped. Branch pushes have no separate preview deployment configured.
+The [daily workflow](.github/workflows/daily.yml) runs the pipeline, Python tests and frontend build, then deploys through GitHub Pages on `main`. Check [Actions](https://github.com/Rockstatata/Agun-Panjika/actions) and the dataset timestamp to verify refresh success. Refresh and deployment require successful pipeline, test and build steps. Branch pushes have no separate preview deployment configured.
 
 <details>
 <summary><b>Repository map</b></summary>
@@ -303,7 +299,7 @@ The [product requirements](docs/Agun%20Panjika%20%E2%80%94%20Product%20Requireme
 - **Scope and attribution:** the project does not monitor the Sundarbans and does not establish that hill fires or upwind burning cause Dhaka haze. Cross-border timing is not causal attribution.
 - **Imagery and freshness:** textured Earth/cloud layers are static. Point exports lack FRP, confidence and acquisition timestamps; colors identify source category. Consult exported timestamps before treating a view as current.
 - **Offline and accessibility:** offline use requires previously cached same-origin resources; external fonts and tiles may be unavailable. Browser accessibility checks do not replace physical-device or assistive-technology review.
-- **Language and release review:** Bangla strings and union names still need native-speaker and CHT community review. Existing dependency advisories and the failed refresh workflow remain release work; no compliance or production-readiness claim is made here.
+- **Language and release review:** Bangla strings and union names still need native-speaker and CHT community review. Existing dependency advisories and refresh-workflow reliability remain release work; no compliance or production-readiness claim is made here.
 
 ## Team and acknowledgements
 
