@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import i18n, { useFmt } from "./i18n";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { ConnectionStatus, RequestStatus } from "./components/RequestStatus";
 import { loadManifest, useAsync } from "./lib/data";
 import { useRoute } from "./lib/router";
 import { Home } from "./screens/Home";
@@ -30,7 +31,10 @@ function useTheme() {
 export default function App() {
   const { t, lang } = useFmt();
   const { route, params, go, setParams } = useRoute();
-  const { data: manifest, error } = useAsync(loadManifest, []);
+  const { data: manifest, error, loading,retry } = useAsync(loadManifest, []);
+  const [online,setOnline]=useState(navigator.onLine);
+  const [screenAttempt,setScreenAttempt]=useState(0);
+  useEffect(()=>{const update=()=>setOnline(navigator.onLine);window.addEventListener('online',update);window.addEventListener('offline',update);return()=>{window.removeEventListener('online',update);window.removeEventListener('offline',update)}},[]);
   const theme = useTheme();
   const switchLang = () => i18n.changeLanguage(lang === "bn" ? "en" : "bn");
   useEffect(()=>{
@@ -94,10 +98,10 @@ export default function App() {
 
       <div className="mission-status no-print"><span>NASA SPACE APPS 2026 <span aria-hidden="true">/</span> KUETaguns</span><span>{lang === "bn" ? "উৎস: NASA FIRMS" : "SOURCE: NASA FIRMS"} · {manifest?.updated_utc.slice(0, 10) ?? "…"}</span></div>
       <main id="main" tabIndex={-1} className="app-main mx-auto px-4 py-5">
-        {error && <p role="alert">{t("app.error", { msg: error.message })}</p>}
-        {!manifest && !error && <p className="text-muted">{t("app.loading")}</p>}
+        {!online&&<ConnectionStatus/>}
+        <RequestStatus error={error} loading={loading} retry={retry}/>
         {manifest && (
-          <ErrorBoundary key={route} fallback={(e) => <p role="alert">{t("app.error", { msg: e.message })}</p>}>
+          <ErrorBoundary key={`${route}-${screenAttempt}`} fallback={(e) => <RequestStatus error={e} retry={()=>setScreenAttempt(n=>n+1)}/> }>
             {route === "home" && <Home manifest={manifest} params={params} setParams={setParams} go={go} />}
             {route === "outlook" && <OutlookScreen manifest={manifest} params={params} setParams={setParams} />}
             {route === "borders" && <Borders />}

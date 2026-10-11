@@ -1,3 +1,4 @@
+import { RequestStatus } from "../components/RequestStatus";
 import { useMemo, useRef } from "react";
 import { CalendarHeatmap } from "../components/CalendarHeatmap";
 import { LevelBadge, LevelIcon } from "../components/LevelBadge";
@@ -23,8 +24,8 @@ interface Props {
 export function Home({ manifest, params, setParams, go }: Props) {
   const { t, lang, num, year: fy } = useFmt();
   const regionId = params.get("r") ?? "bgd";
-  const { data: doc, error } = useAsync(() => loadRegion(regionId), [regionId]);
-  if (error) return <p role="alert">{t("app.error", { msg: error.message })}</p>;
+  const { data: doc, error,loading,retry } = useAsync(() => loadRegion(regionId), [regionId]);
+  if (error) return <RequestStatus error={error} retry={retry}/>;
   return (
     <div className="flex flex-col gap-4">
       <div className="home-geospatial">
@@ -43,7 +44,7 @@ export function Home({ manifest, params, setParams, go }: Props) {
       {doc ? (
         <SeasonView manifest={manifest} doc={doc} params={params} setParams={setParams} go={go} />
       ) : (
-        <p className="text-muted">{t("app.loading")}</p>
+        <RequestStatus loading={loading}/>
       )}
     </div>
   );
@@ -62,7 +63,7 @@ function SeasonView({ manifest, doc, params, setParams, go }: Props & { doc: Reg
   const weekEnd = new Date(isoWeekStart(year, week).getTime() + 6 * 86400000);
   const [b0, b1] = manifest.baseline_years;
   const hasYear = byYear(doc).has(year);
-  const { data: fc } = useAsync(loadForecast, []);
+  const { data: fc,error:forecastError,loading:forecastLoading,retry:retryForecast } = useAsync(loadForecast, []);
   const isLive = year === doc.season.year;
   const alerts = (fc?.alerts.items ?? []).filter((a) =>
     doc.region.id === "bgd"
@@ -158,6 +159,7 @@ function SeasonView({ manifest, doc, params, setParams, go }: Props & { doc: Reg
         </div>
       )}
 
+      {isLive&&<RequestStatus error={forecastError} loading={forecastLoading} retry={retryForecast}/>}
       {isLive && fc && (
         <div className="grid gap-3 sm:grid-cols-2">
           <OutlookCard o={fc.products.next2.outlook[doc.region.id]} name={areaName} />

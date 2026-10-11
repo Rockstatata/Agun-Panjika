@@ -1,3 +1,4 @@
+import { RequestStatus } from "../components/RequestStatus";
 import { scaleBand, scaleLinear } from "d3-scale";
 import { useMemo } from "react";
 import { AnnualChart, SERIES_STYLE } from "../components/AnnualChart";
@@ -15,8 +16,8 @@ const ALL: SeriesKey[] = ["modis", "viirs", "naive", "harm"];
 export function Sensors({ manifest, params, setParams }: { manifest: Manifest; params: URLSearchParams; setParams: (p: Record<string, string | number | undefined>) => void }) {
   const { t, num, num1, year: fy } = useFmt();
   const regionId = params.get("r") ?? "bgd";
-  const { data: doc } = useAsync(() => loadRegion(regionId), [regionId]);
-  const { data: val } = useAsync(loadValidation, []);
+  const { data: doc,error,loading,retry } = useAsync(() => loadRegion(regionId), [regionId]);
+  const { data: val,error:valError,loading:valLoading,retry:retryVal } = useAsync(loadValidation, []);
   const on = (params.get("s") ?? "modis,viirs").split(",").filter((k): k is SeriesKey => ALL.includes(k as SeriesKey));
   const setOn = (next: SeriesKey[] | ((cur: SeriesKey[]) => SeriesKey[])) => setParams({ s: (typeof next === "function" ? next(on) : next).join(",") });
   const withKilns = params.get("kilns") === "1";
@@ -104,6 +105,8 @@ export function Sensors({ manifest, params, setParams }: { manifest: Manifest; p
         )}
       </section>
 
+      <RequestStatus error={error} loading={loading} retry={retry}/>
+      <RequestStatus error={valError} loading={valLoading} retry={retryVal}/>
       {doc && <RatioBars doc={doc} k={k} />}
       {val && <ValidationSection val={val} />}
       <BridgeSection />
@@ -273,8 +276,8 @@ function ValidationSection({ val }: { val: ValidationDoc }) {
 
 function BridgeSection() {
   const { t, num, num1, num2, date, year: fy } = useFmt();
-  const { data: b } = useAsync(loadBridge, []);
-  if (!b) return null;
+  const { data: b,error,loading,retry } = useAsync(loadBridge, []);
+  if (!b) return <RequestStatus error={error} loading={loading} retry={retry}/>;
   const end = new Date(b.snpp_end_utc);
   const diff = (100 * (b.national_totals.noaa20 - b.national_totals.snpp)) / b.national_totals.snpp;
   const months = t("calendar.months").split(",");
