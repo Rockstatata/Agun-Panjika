@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 
 interface Tip {
   x: number;
@@ -16,10 +16,11 @@ export function TooltipProvider({ children }: { children: ReactNode }) {
   const [tip, setTip] = useState<Tip | null>(null);
   const show = useCallback((x: number, y: number, content: ReactNode) => setTip({ x, y, content }), []);
   const hide = useCallback(() => setTip(null), []);
-  const left = tip ? Math.min(tip.x + 14, window.innerWidth - 270) : 0;
-  const top = tip ? (tip.y + 120 > window.innerHeight ? tip.y - 90 : tip.y + 14) : 0;
+  const value=useMemo(()=>({show,hide}),[show,hide]);
+  const left = tip ? Math.max(8,Math.min(tip.x + 14, window.innerWidth - Math.min(260,window.innerWidth-24) - 8)) : 0;
+  const top = tip ? Math.max(8,tip.y + 160 > window.innerHeight ? tip.y - 145 : tip.y + 14) : 0;
   return (
-    <Ctx.Provider value={{ show, hide }}>
+    <Ctx.Provider value={value}>
       {children}
       {tip && (
         <div className="tooltip" style={{ left, top }} role="status">

@@ -121,7 +121,7 @@ function SkillSection({ s }: { s: ForecastSkill; years: [number, number] }) {
         {t("outlook.skillIntro")}
       </p>
       <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
-        <div className="overflow-x-auto">
+        <div tabIndex={0} className="overflow-x-auto">
           <table className="data-table">
             <thead>
               <tr>

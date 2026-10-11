@@ -271,7 +271,7 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
       </div>
       <p className="text-xs text-muted">{lang==='bn'?'সংরক্ষিত সাপ্তাহিক পর্যবেক্ষণ। VIIRS: মাঝারি/উচ্চ আস্থা; MODIS: ≥৩০। প্রতিটি বিন্দুর আস্থা ও সময় এই রপ্তানিতে নেই।':'Archived weekly observations. VIIRS: nominal/high confidence; MODIS: ≥30. Individual confidence and acquisition times are not present in this export.'}</p>
       {(table || mapError) && (
-        <div className="card overflow-x-auto p-3">
+        <div tabIndex={0} className="card overflow-x-auto p-3">
           <table className="data-table">
             <thead>
               <tr>
