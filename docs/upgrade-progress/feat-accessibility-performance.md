@@ -1,5 +1,7 @@
 # feat/accessibility-performance
 
+> Historical independent-feature evidence from the original preview audit. The implementation SHAs and main/merge status below describe that snapshot. For current branch heads, preservation checks and manual dependencies, see [the serial review](../SERIAL_MERGE_REVIEW.md).
+
 ## Current Status
 - Status: implemented, independently tested, pushed and integrated into preview/agun-v2.
 - Base: origin/main `eef030f663fc8f2918d7c9a07da76ef68bd5a1ce`; independent worktree `agun-accessibility`.
@@ -41,7 +43,7 @@ All original screens remain available. Scientific calculations and exported data
 ## Git History
 - Branch: `feat/accessibility-performance`.
 - Implementation source commits (chronological):
-  - `10cdacd5fcb5f47f6c02da55dee7075346aecb73` ? feat(accessibility-performance): split route bundles and improve keyboard, touch, contrast and print accessibility
+  - `10cdacd5fcb5f47f6c02da55dee7075346aecb73` - feat(accessibility-performance): split route bundles and improve keyboard, touch, contrast and print accessibility
 
 - Implementation commits pushed successfully; final documentation push recorded in preview Git manifest.
 - Integrated by cherry-pick only into preview/agun-v2; conflicts resolved there. main remains unchanged.

@@ -1,5 +1,7 @@
 # feat/loading-reliability
 
+> Historical independent-feature evidence from the original preview audit. The implementation SHAs and main/merge status below describe that snapshot. For current branch heads, preservation checks and manual dependencies, see [the serial review](../SERIAL_MERGE_REVIEW.md).
+
 ## Current Status
 - Status: implemented, independently tested, pushed and integrated into preview/agun-v2.
 - Base: origin/main `eef030f663fc8f2918d7c9a07da76ef68bd5a1ce`; independent worktree `agun-reliability`.
@@ -44,8 +46,8 @@ All original screens remain available. Scientific calculations and exported data
 ## Git History
 - Branch: `feat/loading-reliability`.
 - Implementation source commits (chronological):
-  - `4098c571e68574378d0bd6afac7a421408133374` ? feat(loading-reliability): prevent stale scientific views and add explicit request and export recovery
-  - `854d476243123dcdd6778b73cd7e6c41f19aa789` ? fix(reliability): make export fonts readable and citation keys unique
+  - `4098c571e68574378d0bd6afac7a421408133374` - feat(loading-reliability): prevent stale scientific views and add explicit request and export recovery
+  - `854d476243123dcdd6778b73cd7e6c41f19aa789` - fix(reliability): make export fonts readable and citation keys unique
 
 - Implementation commits pushed successfully; final documentation push recorded in preview Git manifest.
 - Integrated by cherry-pick only into preview/agun-v2; conflicts resolved there. main remains unchanged.

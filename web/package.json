@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b --noEmit"
+    "typecheck": "tsc -b --noEmit",
+    "test:upgrade": "node scripts/upgrade-regression.mjs"
   },
   "dependencies": {
     "d3-array": "^3.2.4",
@@ -23,6 +24,7 @@
     "react-i18next": "^15.1.4"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
     "@types/d3-array": "^3.2.1",
     "@types/d3-format": "^3.0.4",
     "@types/d3-geo": "^3.1.1",
@@ -32,6 +34,7 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "playwright": "1.64.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",
     "typescript": "^5.6.3",

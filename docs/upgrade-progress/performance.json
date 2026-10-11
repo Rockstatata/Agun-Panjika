@@ -1,0 +1,165 @@
+{
+  "method": "Three fresh Chromium contexts per production build; localhost, unthrottled. Browser paint timings are environment samples, not Lighthouse scores or mobile guarantees.",
+  "samples": [
+    {
+      "version": "original",
+      "run": 0,
+      "firstContentfulPaintMs": 416,
+      "largestContentfulPaintMs": 580,
+      "domContentLoadedMs": 287.69999998807907,
+      "scriptDecodedBytes": 349880
+    },
+    {
+      "version": "original",
+      "run": 1,
+      "firstContentfulPaintMs": 488,
+      "largestContentfulPaintMs": 596,
+      "domContentLoadedMs": 343.19999998807907,
+      "scriptDecodedBytes": 349880
+    },
+    {
+      "version": "original",
+      "run": 2,
+      "firstContentfulPaintMs": 420,
+      "largestContentfulPaintMs": 600,
+      "domContentLoadedMs": 292.4000000357628,
+      "scriptDecodedBytes": 349880
+    },
+    {
+      "version": "preview",
+      "run": 0,
+      "firstContentfulPaintMs": 452,
+      "largestContentfulPaintMs": 548,
+      "domContentLoadedMs": 299.10000002384186,
+      "scriptDecodedBytes": 353357
+    },
+    {
+      "version": "preview",
+      "run": 1,
+      "firstContentfulPaintMs": 432,
+      "largestContentfulPaintMs": 540,
+      "domContentLoadedMs": 293.5,
+      "scriptDecodedBytes": 353357
+    },
+    {
+      "version": "preview",
+      "run": 2,
+      "firstContentfulPaintMs": 444,
+      "largestContentfulPaintMs": 564,
+      "domContentLoadedMs": 304.10000002384186,
+      "scriptDecodedBytes": 353357
+    }
+  ],
+  "bundles": [
+    {
+      "name": "area-z3Y-9ZZC.js",
+      "bytes": 1637,
+      "gzipBytes": 639
+    },
+    {
+      "name": "Borders-BwgKs3tf.js",
+      "bytes": 6734,
+      "gzipBytes": 2530
+    },
+    {
+      "name": "CalendarHeatmap-Dqhrl8e-.js",
+      "bytes": 6070,
+      "gzipBytes": 2661
+    },
+    {
+      "name": "EarthCanvas-hTxcpBdS.js",
+      "bytes": 28449,
+      "gzipBytes": 11352
+    },
+    {
+      "name": "Home-CoGs9Ihx.js",
+      "bytes": 15853,
+      "gzipBytes": 6250
+    },
+    {
+      "name": "Home-sOcaSt6L.css",
+      "bytes": 1539,
+      "gzipBytes": 659
+    },
+    {
+      "name": "index-Bq890bcz.js",
+      "bytes": 12972,
+      "gzipBytes": 5141
+    },
+    {
+      "name": "index-CDHOiGE4.css",
+      "bytes": 22897,
+      "gzipBytes": 5985
+    },
+    {
+      "name": "index-DBEbn3kN.js",
+      "bytes": 252693,
+      "gzipBytes": 80611
+    },
+    {
+      "name": "LevelBadge-DzOSeD3G.js",
+      "bytes": 969,
+      "gzipBytes": 519
+    },
+    {
+      "name": "MapScreen-BEFeLWNO.js",
+      "bytes": 814430,
+      "gzipBytes": 222555
+    },
+    {
+      "name": "MapScreen-MGNviBeR.css",
+      "bytes": 65461,
+      "gzipBytes": 9217
+    },
+    {
+      "name": "Method-Cxoky12g.js",
+      "bytes": 14983,
+      "gzipBytes": 5948
+    },
+    {
+      "name": "number-C_XiiVkJ.js",
+      "bytes": 196,
+      "gzipBytes": 155
+    },
+    {
+      "name": "Outlook-DZyHQwbH.js",
+      "bytes": 20145,
+      "gzipBytes": 6920
+    },
+    {
+      "name": "OutlookScreen-Bi4kPvui.js",
+      "bytes": 5822,
+      "gzipBytes": 1888
+    },
+    {
+      "name": "Panjika-BGvj5Fu9.js",
+      "bytes": 4037,
+      "gzipBytes": 1702
+    },
+    {
+      "name": "range-OtVwhkKS.js",
+      "bytes": 180,
+      "gzipBytes": 170
+    },
+    {
+      "name": "RegionPicker-CvjiHNxC.js",
+      "bytes": 787,
+      "gzipBytes": 423
+    },
+    {
+      "name": "Sensors-h39zuZDc.js",
+      "bytes": 18846,
+      "gzipBytes": 6671
+    },
+    {
+      "name": "series-4r3tgbBY.js",
+      "bytes": 3769,
+      "gzipBytes": 1834
+    },
+    {
+      "name": "useWidth-D9Nl6cOm.js",
+      "bytes": 22609,
+      "gzipBytes": 9204
+    }
+  ]
+}
