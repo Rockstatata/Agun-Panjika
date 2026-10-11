@@ -3,6 +3,7 @@ import i18n, { useFmt } from "./i18n";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ConnectionStatus, RequestStatus } from "./components/RequestStatus";
 import { loadManifest, useAsync } from "./lib/data";
+import { DemoTour } from "./components/DemoTour";
 import { useRoute } from "./lib/router";
 const Home=lazy(()=>import('./screens/Home').then(m=>({default:m.Home})));
 const Borders=lazy(()=>import('./screens/Borders').then(m=>({default:m.Borders})));
@@ -100,6 +101,7 @@ export default function App() {
 
       <div className="mission-status no-print"><span>NASA SPACE APPS 2026 <span aria-hidden="true">/</span> KUETaguns</span><span>{lang === "bn" ? "উৎস: NASA FIRMS" : "SOURCE: NASA FIRMS"} · {manifest?.updated_utc.slice(0, 10) ?? "…"}</span></div>
       <main id="main" tabIndex={-1} className="app-main mx-auto px-4 py-5">
+        {manifest&&<DemoTour go={go} route={route}/>}
         {!online&&<ConnectionStatus/>}
         <RequestStatus error={error} loading={loading} retry={retry}/>
         {manifest && (
