@@ -51,7 +51,8 @@ export default function MapScreen({ manifest, params, setParams }: { manifest: M
   }, [dy]);
   const defaultWeek = year === manifest.data_through.iso_year ? manifest.data_through.iso_week : 14;
   const week = Math.min(Number(params.get("w")) || defaultWeek, maxWeek);
-  const [hideKilns, setHideKilns] = useState(true);
+  const hideKilns = params.get("kilns") !== "1";
+  const setHideKilns = (fn: (v: boolean) => boolean) => setParams({ kilns: fn(hideKilns) ? "0" : "1" });
   const [table, setTable] = useState(false);
   const mapDiv = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap | null>(null);
