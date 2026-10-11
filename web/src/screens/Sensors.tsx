@@ -18,7 +18,7 @@ export function Sensors({ manifest, params, setParams }: { manifest: Manifest; p
   const { data: doc } = useAsync(() => loadRegion(regionId), [regionId]);
   const { data: val } = useAsync(loadValidation, []);
   const on = (params.get("s") ?? "modis,viirs").split(",").filter((k): k is SeriesKey => ALL.includes(k as SeriesKey));
-  const setOn = (fn: (cur: SeriesKey[]) => SeriesKey[]) => setParams({ s: fn(on).join(",") });
+  const setOn = (next: SeriesKey[] | ((cur: SeriesKey[]) => SeriesKey[])) => setParams({ s: (typeof next === "function" ? next(on) : next).join(",") });
   const withKilns = params.get("kilns") === "1";
   const setWithKilns = (v: boolean) => setParams({ kilns: v ? "1" : "0" });
   const rows = useMemo(() => {
@@ -57,6 +57,11 @@ export function Sensors({ manifest, params, setParams }: { manifest: Manifest; p
           </div>
         </div>
         <div className="flex flex-wrap gap-2" role="group" aria-label={t("sensors.annual")}>
+          <div className="sensor-story" role="group" aria-label={t("sensors.intro")}>
+            <button type="button" className="chip" onClick={()=>setOn(["modis","viirs"])}>{t("sensors.rawModis")} + {t("sensors.rawViirs")}</button>
+            <span aria-hidden="true">→</span><button type="button" className="chip" onClick={()=>setOn(["viirs","naive"])}>{t("sensors.naive", { k:num1(k) })}</button>
+            <span aria-hidden="true">→</span><button type="button" className="chip" onClick={()=>setOn(["viirs","harm"])}>{t("sensors.harmonised")}</button>
+          </div>
           {ALL.map((s) => (
             <button
               key={s}
